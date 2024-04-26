@@ -5,11 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import admin from 'firebase-admin';
-import { appConfig } from 'src/app.config';
 import { FirebaseAdminService } from 'src/auth/firebase-admin.service';
-
-const serviceAccount = appConfig.google.firebase_service_account;
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -20,9 +16,11 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const app = this.firebaseAdminService.adminInstance.auth();
-    const idToken = context.getArgs()[0]?.headers?.authorization.split(' ')[1];
-    console.log(context.getArgs()[0]?.headers?.authorization);
+
     try {
+      const idToken = context
+        .getArgs()[0]
+        ?.headers?.authorization.split(' ')[1];
       return await app
         .verifyIdToken(idToken)
         .then(async (decodedToken) => {

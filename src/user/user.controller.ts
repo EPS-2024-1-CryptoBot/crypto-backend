@@ -11,6 +11,6 @@ export class UserController {
   getProfile(@Req() req: Request) {
     const user = (req as any).user; // Acesse o usuário a partir do contexto da requisição
     console.log(user); // Exibe o usuário no console
-    return { success: true, data: { user: user }};
+    return { success: true, data: { user: user } };
   }
 }
