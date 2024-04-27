@@ -14,10 +14,12 @@ export const MODULE_OPTIONS: TypeOrmModuleOptions = {
   autoLoadEntities: true,
   namingStrategy: new SnakeNamingStrategy(),
 };
-
 // Config for Typeorm CLI migrations as they are different from nest/typeorm configs
 export const CLI_OPTIONS: any = {
   ...MODULE_OPTIONS,
+  migrationsTableName: '__schema_migrations',
+  migrations: buildConfigPath('migrations/*'),
+  factories: buildConfigPath('factories/*.factory'),
   entities: buildConfigPath('entities/*.entity'),
 };
 

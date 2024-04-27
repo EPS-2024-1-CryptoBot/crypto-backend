@@ -8,7 +8,7 @@ export class User extends Base {
   email: string;
 
   @Column({ nullable: true })
-  firebaseId?: string;
+  firebaseUid?: string;
 
   @Column()
   firstName: string;
