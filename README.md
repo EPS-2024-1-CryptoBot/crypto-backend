@@ -10,7 +10,6 @@
 
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
 
-
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
@@ -18,30 +17,46 @@
 ## Installation
 
 ```bash
-$ npm install
+npm install
+```
+
+## Environment configuration
+
+1. Build the docker compose file
+
+```bash
+docker-compose build
+```
+
+2. Run pending migrations
+
+```bash
+npm run db:migrate:up
 ```
 
 ## Running the app
 
 ```bash
 # development and watch mode
-$ npm run develop
+npm run dev
 
 # production mode
-$ npm run start:prod
+npm run start:prod
 ```
+
+if you ran the app in development mode, you can access the swagger documentation at `http://localhost:3000/api`
 
 ## Test
 
 ```bash
 # unit tests
-$ npm run test
+npm run test
 
 # e2e tests
-$ npm run test:e2e
+npm run test:e2e
 
 # test coverage
-$ npm run test:cov
+npm run test:cov
 ```
 
 ## License
