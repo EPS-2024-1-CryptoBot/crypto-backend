@@ -3,29 +3,14 @@ import {
   IsNotEmpty,
   MaxLength,
   MinLength,
-  Matches,
-  IsEnum,
   IsAlpha,
+  ValidateIf,
 } from 'class-validator';
 
-enum Permissions {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-  DEVELOPER = 'DEVELOPER',
-}
-
-export class UserDto {
+export class CreateUserDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
-
-  @IsNotEmpty()
-  @MinLength(8)
-  @MaxLength(20)
-  @Matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,20}$/, {
-    message: 'password too weak',
-  })
-  password: string;
 
   @IsNotEmpty()
   @MinLength(2)
@@ -39,9 +24,28 @@ export class UserDto {
   @IsAlpha()
   lastName: string;
 
-  @IsNotEmpty()
-  @IsEnum(Permissions, { each: true })
-  permissions: Permissions[];
+  firebaseUid: string;
+}
 
-  role: string;
+export class UpdateUserDto {
+  @MinLength(2)
+  @MaxLength(20)
+  @IsAlpha()
+  @ValidateIf((o) => o.firstName !== undefined)
+  firstName: string;
+
+  @MinLength(2)
+  @MaxLength(20)
+  @IsAlpha()
+  lastName: string;
+
+  firebaseUid: string;
+}
+
+export class UserDto {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  firebaseUid: string;
 }

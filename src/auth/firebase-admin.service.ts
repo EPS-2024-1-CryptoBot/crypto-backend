@@ -1,7 +1,6 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import admin from 'firebase-admin';
 import { appConfig } from 'src/app.config';
-import { UserDto } from 'src/user/dto/user.dto';
 
 // Read the JSON file
 const serviceAccount = appConfig.google.firebase_service_account;
@@ -91,23 +90,6 @@ export class FirebaseAdminService {
     } catch (error) {
       this._logger.error(error);
       return false;
-    }
-  }
-
-  async createUser(userRequest: UserDto): Promise<any> {
-    const { email, password, firstName, lastName, role } = userRequest;
-    const app = this.adminInstance;
-
-    try {
-      const createdUser = await app.auth().createUser({
-        email,
-        password,
-        displayName: `${firstName} ${lastName}`,
-      });
-      await app.auth().setCustomUserClaims(createdUser.uid, { role });
-      return createdUser;
-    } catch (error) {
-      throw new BadRequestException(error.message);
     }
   }
 }
