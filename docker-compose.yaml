@@ -1,0 +1,33 @@
+version: "3.2"
+
+services:
+  pgsql:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "cryptobot"
+      POSTGRES_USER: "postgres"
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres-compose-network
+    volumes:
+      - ./pgdata:/var/lib/pgsql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "teste@teste.com"
+      PGADMIN_DEFAULT_PASSWORD: "postgres"
+    ports:
+      - "5400:80"
+    depends_on:
+      - pgsql
+    networks:
+      - postgres-compose-network
+    volumes:
+      - ./pgamdin-data/servers.json:/pgadmin4/servers.json
+      - ./pgamdin-data/data:/var/lib/pgadmin
+
+networks:
+  postgres-compose-network:
+    driver: bridge

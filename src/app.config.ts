@@ -53,8 +53,8 @@ export const loadConfig = () => {
       jwt_secret: process.env.JWT_SECRET,
     },
     db: {
-      urlString: process.env.DATABASE_URL,
-      dbName: process.env.DATABASE_NAME,
+      url: process.env.DATABASE_URL,
+      synchronize: false,
     },
     google: {
       firebase_service_account: JSON.parse(firebaseServiceAccount || '{}'),
