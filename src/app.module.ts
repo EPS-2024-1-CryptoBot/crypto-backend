@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { FirebaseAdminService } from './auth/firebase-admin.service';
 import { DatabaseModule } from './database/database.module';
+import { AuthModule } from './auth/auth.module';
 
 const AppConfig = ConfigModule.forRoot({
   isGlobal: true,
@@ -13,7 +14,7 @@ const AppConfig = ConfigModule.forRoot({
 });
 
 @Module({
-  imports: [AppConfig, UserModule, DatabaseModule],
+  imports: [AppConfig, UserModule, DatabaseModule, AuthModule],
   controllers: [AppController],
   providers: [AppService, FirebaseAdminService],
 })
