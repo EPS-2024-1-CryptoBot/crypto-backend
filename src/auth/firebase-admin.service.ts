@@ -41,20 +41,6 @@ export class FirebaseAdminService {
     }
   }
 
-  // public async createUser(
-  //   email: string,
-  //   password: string,
-  //   emailVerified: boolean,
-  // ): Promise<any> {
-  //   try {
-  //     return await this.adminInstance
-  //       .auth()
-  //       .createUser({ emailVerified, email, password });
-  //   } catch (error) {
-  //     throw new Error(error);
-  //   }
-  // }
-
   public async verifyToken(token: string): Promise<any> {
     try {
       await this.adminInstance.auth().verifyIdToken(token);
