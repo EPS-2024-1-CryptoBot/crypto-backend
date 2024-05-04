@@ -1,0 +1,70 @@
+name: Deploy Backend
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install make
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_DEFAULT_REGION }}
+
+      - name: Pull Firebase Credentials
+        uses: keithweaver/aws-s3-github-action@v1.0.0
+        with:
+          command: cp
+          source: s3://prod-backend-cryptobotunb-381492146586/firebase.json
+          destination: ./env/dev/firebase.json
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ vars.AWS_DEFAULT_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push docker image to Amazon ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ${{ vars.ECR_REPO_NAME }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build \
+          --build-arg PORT=${{ vars.PORT }} \
+          --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} \
+          --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} \
+          -f Dockerfile.prod \
+          -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+      - name: Deploy
+        env:
+            TF_VAR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            TF_VAR_REPOSITORY: ${{ vars.ECR_REPO_NAME }}
+            TF_VAR_IMAGE_TAG: ${{ github.sha }}
+            TF_VAR_environment: prod
+            TF_VAR_PG_USERNAME: ${{ secrets.PG_USERNAME }}
+            TF_VAR_PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
+        run: |
+          make tf-init
+          make tf-apply
