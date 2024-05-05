@@ -10,7 +10,7 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
     private firebaseAdmin: FirebaseAdminService,
-  ) {}
+  ) { }
 
   async login(email: string, token: string) {
     const user = await this.userService.findByEmail(email);
@@ -22,6 +22,31 @@ export class AuthService {
     if (!verifyFirebaseToken) {
       throw new NotFoundException('Token not valid');
     }
+
+    const requestToken = this.generateToken(user);
+
+    return { token: requestToken, user };
+  }
+
+  async register(email: string, token: string, firstName: string, lastName: string, firebaseUid: string) {
+    const verifyFirebaseToken = await this.firebaseAdmin.verifyToken(token);
+    if (!verifyFirebaseToken) {
+      throw new NotFoundException('Token not valid');
+    }
+
+    const userExists = await this.userService.findByEmail(email);
+    if (userExists) {
+      throw new NotFoundException('User already exists');
+    }
+
+    // const firebaseUid = verifyFirebaseToken.uid;
+
+    const user = await this.userService.createUser({
+      email,
+      firstName,
+      lastName,
+      firebaseUid,
+    });
 
     const requestToken = this.generateToken(user);
 
