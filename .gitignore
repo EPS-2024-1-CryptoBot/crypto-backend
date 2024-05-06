@@ -1,3 +1,9 @@
+*.tfvars
+.secrets
+.terraform
+*.hcl
+firebase*.json
+
 # compiled output
 /dist
 /node_modules
