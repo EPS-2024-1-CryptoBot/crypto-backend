@@ -5,3 +5,15 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
+
+  caddy:
+    container_name: caddy_reverse_proxy
+    image: caddy:latest
+    restart: unless-stopped
+    volumes:
+      - ./Caddyfile.prod:/etc/caddy/Caddyfile
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - server
