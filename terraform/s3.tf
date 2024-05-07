@@ -8,10 +8,3 @@ resource "aws_s3_object" "file_upload_firebase" {
   source      = "${path.root}/../env/prod/firebase.json"
   source_hash = filemd5("${path.root}/../env/prod/firebase.json")
 }
-
-resource "aws_s3_object" "file_upload_prod" {
-  bucket      = aws_s3_bucket.backend_bucket.id
-  key         = "backend.zip"
-  source      = "${path.root}/../backend.zip"
-  source_hash = filemd5("${path.root}/../backend.zip")
-}
