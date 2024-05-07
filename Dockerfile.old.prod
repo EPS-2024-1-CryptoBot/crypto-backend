@@ -35,7 +35,7 @@ RUN touch ./env/prod/firebase.json
 COPY ./env/dev/firebase.json ./env/prod/firebase.json
 
 EXPOSE ${PORT}
-RUN npm run db:migrate:down:prod
-RUN npm run db:migrate:gen:prod
-RUN npm run db:migrate:up:prod
+# RUN npm run db:migrate:down:prod
+# RUN npm run db:migrate:gen:prod
+# RUN npm run db:migrate:up:prod
 CMD node /srv/src/main.js
