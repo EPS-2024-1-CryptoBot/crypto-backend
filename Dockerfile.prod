@@ -33,7 +33,7 @@ COPY --from=build /app/firebase.json ./env/prod/firebase.json
 COPY --from=base /app/node_modules ./node_modules
 
 EXPOSE ${PORT}
-# RUN npm run db:migrate:down:prod
-# RUN npm run db:migrate:gen:prod
-# RUN npm run db:migrate:up:prod
+RUN npm run db:migrate:down:prod
+RUN npm run db:migrate:gen:prod
+RUN npm run db:migrate:up:prod
 ENTRYPOINT node /srv/src/main.js
