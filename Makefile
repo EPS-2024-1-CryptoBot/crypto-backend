@@ -34,11 +34,13 @@ help:
 
 ###########################################################
 # DEV
+# include ./env/dev.env
+# export
 run-local:
 	$(MAKE) up
 	npm run dev
-up:
-	docker-compose up -d
+up-dev:
+	docker-compose -f docker-compose-dev.yaml --env-file ./env/dev.env up -d
 
 act:
 	act --container-architecture linux/amd64 --secret-file .secrets --var-file .vars
@@ -46,10 +48,26 @@ act:
 
 ###########################################################
 # PRODUCTION
-include ./env/prod.env
-export
+# include ./env/prod.env
+# export
+stop-prod:
+	docker stop $(docker ps -aqf "name=server")
+deploy-prod:
+	docker compose -f docker-compose-prod.yaml up -d --build --force-recreate
+zip:
+	zip -r backend.zip ./dist ./node_modules ./package*.json ./tsconfig.json ./env/prod/firebase.json
+install:
+	npm ci
+local-build:
+	npm run build
 build:
 	docker build -f Dockerfile.prod \
+	--build-arg PORT=$${PORT} \
+	--build-arg JWT_SECRET=$${JWT_SECRET} \
+	--build-arg DATABASE_URL=$${DATABASE_URL} \
+	-t backend:prod .
+old-docker-build:
+	docker build -f Dockerfile.old.prod \
 	--build-arg PORT=$${PORT} \
 	--build-arg JWT_SECRET=$${JWT_SECRET} \
 	--build-arg DATABASE_URL=$${DATABASE_URL} \
