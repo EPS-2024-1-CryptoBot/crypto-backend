@@ -1,6 +1,15 @@
 services:
+  server:
+    container_name: backend_server
+    image: ${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - pgsql
   pgsql:
     image: postgres
+    container_name: postgres
     environment:
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: "cryptobot"
@@ -13,6 +22,7 @@ services:
       - ./pgdata:/var/lib/pgsql/data
   pgadmin:
     image: dpage/pgadmin4
+    container_name: pgAdmin
     environment:
       PGADMIN_DEFAULT_EMAIL: "teste@teste.com"
       PGADMIN_DEFAULT_PASSWORD: "postgres"

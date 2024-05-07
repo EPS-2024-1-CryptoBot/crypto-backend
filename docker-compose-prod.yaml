@@ -1,0 +1,7 @@
+services:
+  server:
+    container_name: backend_server
+    image: ${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
