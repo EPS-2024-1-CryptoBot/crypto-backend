@@ -7,9 +7,10 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
+    name: Build and Push
     runs-on: ubuntu-22.04
-
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -68,6 +69,15 @@ jobs:
           make tf-init
           make tf-apply
 
+  update:
+    runs-on: ubuntu-22.04
+    name: Update Files
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Update Compose
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -77,6 +87,23 @@ jobs:
           port: 22
           source: "docker-compose-prod.yaml,Makefile"
           target: /home/debian/srv
+
+  deploy:
+    runs-on: ubuntu-22.04
+    name: Deploy
+    needs: [build, update]
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_DEFAULT_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Deploying Server
         uses: appleboy/ssh-action@v1.0.3
