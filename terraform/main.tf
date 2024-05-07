@@ -12,12 +12,12 @@ provider "aws" {
   region = "us-east-1"
 }
 
-module "postgres" {
-  source = "./db"
+# module "postgres" {
+#   source = "./db"
 
-  PG_USERNAME = var.PG_USERNAME
-  PG_PASSWORD = var.PG_PASSWORD
-}
+#   PG_USERNAME = var.PG_USERNAME
+#   PG_PASSWORD = var.PG_PASSWORD
+# }
 
 module "ecr_repo" {
   source        = "./ecr"
