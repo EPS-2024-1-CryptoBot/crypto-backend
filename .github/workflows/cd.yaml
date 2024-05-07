@@ -85,7 +85,7 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           password: ${{ secrets.VPS_PASSWORD }}
           port: 22
-          source: "docker-compose-prod.yaml,Makefile,Caddyfile.prod"
+          source: "docker-compose-prod.yaml,Makefile"
           target: /home/debian/srv
 
   deploy:
