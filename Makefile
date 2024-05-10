@@ -16,7 +16,7 @@ help:
 
 	@echo "$(GREEN)@ DEV$(END)"
 	@printf "$(CYAN)%-20s$(END) %b \n" "run-local:" "Runs $(UNDERLINE)docker-compose.yaml$(END) file and runs nest locally"
-	@printf "$(CYAN)%-20s$(END) %b \n" "up:" "Runs $(UNDERLINE)docker-compose.yaml$(END) file only"
+	@printf "$(CYAN)%-20s$(END) %b \n" "up-dev:" "Runs $(UNDERLINE)docker-compose-dev.yaml$(END) file only"
 	@printf "$(CYAN)%-20s$(END) %b \n" "act:" "Runs all ./github/workflows GitHub actions workflows"
 	@echo ""
 	@printf "$(CYAN)%-20s$(END) %b \n" "tf-apply-dev:" "Runs terraform apply -auto-approve with .secrets and .vars files"
@@ -38,8 +38,7 @@ help:
 # export
 .PHONY: build-dev up-dev
 run-local:
-	$(MAKE) up
-	npm run dev
+	$(MAKE) up-dev
 build-dev:
 	docker build -f Dockerfile.old.prod \
 	--build-arg PORT=$${PORT} \
