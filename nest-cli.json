@@ -4,6 +4,20 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "plugins": ["@nestjs/swagger/plugin"]
+    "plugins": [
+      "@nestjs/swagger/plugin"
+    ],
+    "webpack": true
+  },
+  "projects": {
+    "wallet-api": {
+      "type": "library",
+      "root": "libs/wallet-api",
+      "entryFile": "index",
+      "sourceRoot": "libs/wallet-api/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/wallet-api/tsconfig.lib.json"
+      }
+    }
   }
 }

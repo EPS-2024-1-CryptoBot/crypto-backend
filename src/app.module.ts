@@ -7,6 +7,8 @@ import { UserModule } from './user/user.module';
 import { FirebaseAdminService } from './auth/firebase-admin.service';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
+import { WalletModule } from './wallet/wallet.module';
+import { WalletApiModule } from '@/wallet-api';
 
 const AppConfig = ConfigModule.forRoot({
   isGlobal: true,
@@ -14,7 +16,7 @@ const AppConfig = ConfigModule.forRoot({
 });
 
 @Module({
-  imports: [AppConfig, UserModule, DatabaseModule, AuthModule],
+  imports: [AppConfig, UserModule, DatabaseModule, AuthModule, WalletModule, WalletApiModule],
   controllers: [AppController],
   providers: [AppService, FirebaseAdminService],
 })
