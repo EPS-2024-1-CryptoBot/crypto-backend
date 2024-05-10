@@ -8,6 +8,7 @@ RUN npm install
 FROM base AS build
 WORKDIR /app
 COPY ./src ./src
+COPY ./libs ./libs
 COPY ./package*.json ./
 COPY ./tsconfig*.json ./
 RUN npm run build
