@@ -12,6 +12,8 @@
   },
   "moduleNameMapper": {
     "y/wallet-api/(.*)": "<rootDir>/../libs/wallet-api/src/$1",
-    "y/wallet-api": "<rootDir>/../libs/wallet-api/src"
+    "y/wallet-api": "<rootDir>/../libs/wallet-api/src",
+    "y/rsa-api/(.*)": "<rootDir>/../libs/rsa-api/src/$1",
+    "y/rsa-api": "<rootDir>/../libs/rsa-api/src"
   }
 }
