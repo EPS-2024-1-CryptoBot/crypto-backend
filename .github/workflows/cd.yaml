@@ -53,8 +53,8 @@ jobs:
           --build-arg PORT=${{ vars.PORT }} \
           --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} \
           --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} \
-          --build-arg URL_WALLET=$${ secrets.URL_WALLET } \
-          --build-arg URL_RSA=$${ secrets.URL_RSA } \
+          --build-arg URL_WALLET=${ secrets.URL_WALLET } \
+          --build-arg URL_RSA=${ secrets.URL_RSA } \
           -f Dockerfile.prod \
           -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
