@@ -97,8 +97,8 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^y/wallet-api(|/.*)$": "<rootDir>/libs/wallet-api/src/$1",
-      "^y/rsa-api(|/.*)$": "<rootDir>/libs/rsa-api/src/$1"
+      "@/wallet-api(|/.*)$": "<rootDir>/libs/wallet-api/src/$1",
+      "@/rsa-api(|/.*)$": "<rootDir>/libs/rsa-api/src/$1"
     }
   }
 }
