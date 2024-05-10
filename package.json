@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "dev": "HOST_ENV=dev nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -97,7 +97,8 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^y/wallet-api(|/.*)$": "<rootDir>/libs/wallet-api/src/$1"
+      "@/wallet-api(|/.*)$": "<rootDir>/libs/wallet-api/src/$1",
+      "@/rsa-api(|/.*)$": "<rootDir>/libs/rsa-api/src/$1"
     }
   }
 }

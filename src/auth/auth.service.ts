@@ -28,7 +28,7 @@ export class AuthService {
     return { token: requestToken, user };
   }
 
-  async register(email: string, token: string, firstName: string, lastName: string, firebaseUid: string) {
+  async register(email: string, token: string, firstName: string, lastName: string, firebaseUid: string, public_key: string, private_key: string[]) {
     const verifyFirebaseToken = await this.firebaseAdmin.verifyToken(token);
     if (!verifyFirebaseToken) {
       throw new NotFoundException('Token not valid');
@@ -46,6 +46,8 @@ export class AuthService {
       firstName,
       lastName,
       firebaseUid,
+      public_key,
+      private_key
     });
 
     const requestToken = this.generateToken(user);

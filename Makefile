@@ -16,7 +16,7 @@ help:
 
 	@echo "$(GREEN)@ DEV$(END)"
 	@printf "$(CYAN)%-20s$(END) %b \n" "run-local:" "Runs $(UNDERLINE)docker-compose.yaml$(END) file and runs nest locally"
-	@printf "$(CYAN)%-20s$(END) %b \n" "up:" "Runs $(UNDERLINE)docker-compose.yaml$(END) file only"
+	@printf "$(CYAN)%-20s$(END) %b \n" "up-dev:" "Runs $(UNDERLINE)docker-compose-dev.yaml$(END) file only"
 	@printf "$(CYAN)%-20s$(END) %b \n" "act:" "Runs all ./github/workflows GitHub actions workflows"
 	@echo ""
 	@printf "$(CYAN)%-20s$(END) %b \n" "tf-apply-dev:" "Runs terraform apply -auto-approve with .secrets and .vars files"
@@ -38,13 +38,14 @@ help:
 # export
 .PHONY: build-dev up-dev
 run-local:
-	$(MAKE) up
-	npm run dev
+	$(MAKE) up-dev
 build-dev:
 	docker build -f Dockerfile.old.prod \
 	--build-arg PORT=$${PORT} \
 	--build-arg JWT_SECRET=$${JWT_SECRET} \
 	--build-arg DATABASE_URL="postgres://postgres:postgres@localhost:5432/cryptobot" \
+	--build-arg URL_WALLET=$${URL_WALLET} \
+	--build-arg URL_RSA=$${URL_RSA} \
 	-t backend:dev .
 up-dev: build-dev
 	docker-compose -f docker-compose-dev.yaml --env-file ./env/dev.env up -d --force-recreate
@@ -72,6 +73,8 @@ build:
 	--build-arg PORT=$${PORT} \
 	--build-arg JWT_SECRET=$${JWT_SECRET} \
 	--build-arg DATABASE_URL=$${DATABASE_URL} \
+	--build-arg URL_WALLET=$${URL_WALLET} \
+	--build-arg URL_RSA=$${URL_RSA} \
 	-t backend:prod .
 run-prod:
 	docker run --name crypto-backend --rm -p $${PORT}:$${PORT} backend:prod

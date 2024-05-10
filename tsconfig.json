@@ -27,6 +27,12 @@
       ],
       "@/wallet-api/*": [
         "libs/wallet-api/src/*"
+      ],
+      "@/rsa-api": [
+        "libs/rsa-api/src"
+      ],
+      "@/rsa-api/*": [
+        "libs/rsa-api/src/*"
       ]
     }
   }

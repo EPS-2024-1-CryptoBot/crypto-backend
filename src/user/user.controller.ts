@@ -4,11 +4,16 @@ import { Auth } from 'src/auth/auth.decorator';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { User } from 'src/database/entities';
+import { RsaApiService } from '@/rsa-api';
 
 @Controller('users')
 @ApiTags('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  
+  constructor(
+    private readonly userService: UserService, 
+    private readonly rsaApiService:  RsaApiService
+  ) {}
 
   // This is just to test Auth decorator
   @Get('/profile')
@@ -30,7 +35,10 @@ export class UserController {
   }
 
   @Post()
-  createUser(@Body() user: CreateUserDto) {
+  async createUser(@Body() user: CreateUserDto) {
+    const keys = await this.rsaApiService.getKeys();
+    user.public_key = keys.data.public_key;
+    user.private_key = keys.data.private_encrypted_key;
     return this.userService.createUser(user as User);
   }
 

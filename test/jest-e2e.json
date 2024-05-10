@@ -11,7 +11,9 @@
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "moduleNameMapper": {
-    "y/wallet-api/(.*)": "<rootDir>/../libs/wallet-api/src/$1",
-    "y/wallet-api": "<rootDir>/../libs/wallet-api/src"
+    "@/wallet-api/(.*)": "<rootDir>/../libs/wallet-api/src/$1",
+    "@/wallet-api": "<rootDir>/../libs/wallet-api/src",
+    "@/rsa-api/(.*)": "<rootDir>/../libs/rsa-api/src/$1",
+    "@/rsa-api": "<rootDir>/../libs/rsa-api/src"
   }
 }

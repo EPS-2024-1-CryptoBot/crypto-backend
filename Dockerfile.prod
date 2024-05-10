@@ -7,6 +7,7 @@ RUN npm install
 FROM base AS build
 WORKDIR /app
 COPY ./src ./src
+COPY ./libs ./libs
 COPY ./package*.json ./
 COPY ./tsconfig*.json ./
 COPY ./env/prod/firebase.json ./
@@ -18,22 +19,26 @@ ENV NODE_ENV production
 ARG PORT
 ARG JWT_SECRET
 ARG DATABASE_URL
+ARG URL_WALLET
+ARG URL_RSA
 
 ENV PORT ${PORT}
 ENV JWT_SECRET ${JWT_SECRET}
 ENV DATABASE_URL ${DATABASE_URL}
+ENV URL_WALLET ${URL_WALLET}
+ENV URL_RSA ${URL_RSA}
 ENV HOST_ENV prod
 
 WORKDIR /srv
 
-COPY --from=build /app/dist ./src
+COPY --from=build /app/dist ./
 COPY --from=build /app/package*.json ./
 COPY --from=build /app/tsconfig*.json ./
 COPY --from=build /app/firebase.json ./env/prod/firebase.json
 COPY --from=base /app/node_modules ./node_modules
 
 EXPOSE ${PORT}
-RUN npm run db:migrate:down:prod
-RUN npm run db:migrate:gen:prod
-RUN npm run db:migrate:up:prod
+# RUN npm run db:migrate:down:prod
+# RUN npm run db:migrate:gen:prod
+# RUN npm run db:migrate:up:prod
 ENTRYPOINT node /srv/src/main.js
