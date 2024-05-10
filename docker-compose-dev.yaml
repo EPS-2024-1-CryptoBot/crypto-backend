@@ -8,6 +8,8 @@ services:
       - "3000:3000"
     depends_on:
       - pgsql
+    env_file:
+      - ./env/dev.env
 
   pgsql:
     image: postgres
