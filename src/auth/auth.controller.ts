@@ -20,7 +20,9 @@ export class AuthController {
       registerDto.token,
       registerDto.firstName,
       registerDto.lastName,
-      registerDto.firebaseUid
+      registerDto.firebaseUid,
+      registerDto.public_key,
+      registerDto.private_key
     );
   }
 

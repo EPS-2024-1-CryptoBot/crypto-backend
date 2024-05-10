@@ -3,13 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/database/entities/user.entity';
 import { UserService } from 'src/user/user.service';
 import { FirebaseAdminService } from './firebase-admin.service';
-import { RsaApiService } from 'libs/rsa-api/src/rsa-api.service'
 
 @Injectable()
 export class AuthService {
-
-  private readonly rsaApiService:  RsaApiService;
-
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
@@ -32,7 +28,7 @@ export class AuthService {
     return { token: requestToken, user };
   }
 
-  async register(email: string, token: string, firstName: string, lastName: string, firebaseUid: string) {
+  async register(email: string, token: string, firstName: string, lastName: string, firebaseUid: string, public_key: string, private_key: string[]) {
     const verifyFirebaseToken = await this.firebaseAdmin.verifyToken(token);
     if (!verifyFirebaseToken) {
       throw new NotFoundException('Token not valid');
@@ -44,11 +40,6 @@ export class AuthService {
     }
 
     // const firebaseUid = verifyFirebaseToken.uid;
-    
-    const keys = await this.rsaApiService.getKeys();
-    console.log(keys);
-    const public_key = keys.data.public_key;
-    const private_key = keys.data.private_key;
 
     const user = await this.userService.createUser({
       email,
