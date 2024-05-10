@@ -18,6 +18,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/wallet-api/tsconfig.lib.json"
       }
+    },
+    "rsa-api": {
+      "type": "library",
+      "root": "libs/rsa-api",
+      "entryFile": "index",
+      "sourceRoot": "libs/rsa-api/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/rsa-api/tsconfig.lib.json"
+      }
     }
   }
 }
