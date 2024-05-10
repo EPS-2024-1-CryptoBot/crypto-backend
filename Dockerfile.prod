@@ -27,7 +27,7 @@ ENV HOST_ENV prod
 
 WORKDIR /srv
 
-COPY --from=build /app/dist ./src
+COPY --from=build /app/dist ./
 COPY --from=build /app/package*.json ./
 COPY --from=build /app/tsconfig*.json ./
 COPY --from=build /app/firebase.json ./env/prod/firebase.json
