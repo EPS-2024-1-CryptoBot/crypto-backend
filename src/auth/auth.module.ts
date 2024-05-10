@@ -7,9 +7,10 @@ import { JwtModule } from '@nestjs/jwt';
 import { fetchConfig } from 'src/app.config';
 import { JwtStrategy } from './jwt.strategy';
 import { FirebaseAdminService } from './firebase-admin.service';
+import { RsaApiService } from '@/rsa-api';
 
 @Module({
-  providers: [AuthService, FirebaseAdminService, JwtStrategy],
+  providers: [AuthService, FirebaseAdminService, JwtStrategy, RsaApiService],
   controllers: [AuthController],
   imports: [
     UserModule,
