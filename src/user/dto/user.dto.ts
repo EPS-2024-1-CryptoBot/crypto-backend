@@ -25,6 +25,10 @@ export class CreateUserDto {
   lastName: string;
 
   firebaseUid: string;
+
+  public_key: string;
+
+  private_key: string[];
 }
 
 export class UpdateUserDto {
@@ -48,4 +52,6 @@ export class UserDto {
   firstName: string;
   lastName: string;
   firebaseUid: string;
+  public_key: string;
+  private_key: string[];
 }
