@@ -15,4 +15,10 @@ export class User extends Base {
 
   @Column()
   lastName: string;
+
+  @Column()
+  public_key: string;
+
+  @Column("text", { array: true })
+  private_key: string[];
 }

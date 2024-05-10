@@ -21,6 +21,8 @@ export class AuthController {
       registerDto.firstName,
       registerDto.lastName,
       registerDto.firebaseUid,
+      registerDto.public_key,
+      registerDto.private_key
     );
   }
 

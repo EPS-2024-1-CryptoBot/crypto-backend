@@ -25,4 +25,10 @@ export class RegisterDto {
 
   @IsNotEmpty()
   firebaseUid: string;
+
+  @IsNotEmpty()
+  public_key: string;
+
+  @IsNotEmpty()
+  private_key: string[];
 }
