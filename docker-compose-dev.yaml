@@ -20,8 +20,6 @@ services:
       POSTGRES_USER: "postgres"
     ports:
       - "5432:5432"
-    networks:
-      - postgres-compose-network
     volumes:
       - ./pgdata:/var/lib/pgsql/data
 
@@ -38,11 +36,5 @@ services:
       - "5400:80"
     depends_on:
       - pgsql
-    networks:
-      - postgres-compose-network
     volumes:
       - ./pgamdin-data/:/var/lib/pgadmin
-
-networks:
-  postgres-compose-network:
-    driver: bridge
