@@ -7,3 +7,10 @@ export const walletApi = axios.create({
     'Content-Type': 'application/json'
   }
 });
+
+export const rsaApi = axios.create({
+  baseURL: fetchConfig('lib', 'rsa'),
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
