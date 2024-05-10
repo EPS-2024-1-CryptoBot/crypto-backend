@@ -20,6 +20,7 @@ export class AuthController {
   @Post('register')
   async register(@Body() registerDto: RegisterDto) {
     const keys = await this.rsaApiService.getKeys();
+    
     return this.authService.register(
       registerDto.email,
       registerDto.token,
