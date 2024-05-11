@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    name: Build and Push
+    name: echo
     runs-on: ubuntu-22.04
     
     steps:
@@ -14,4 +14,4 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          echo $DATABASE_URL
+          echo ${{ secrets.DATABASE_URL }}
