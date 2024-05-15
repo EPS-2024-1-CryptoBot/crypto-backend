@@ -38,11 +38,6 @@ export class WalletController {
     return this.walletApiService.addTransaction(from, createWalletDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.walletService.findOne(+id);
-  }
-
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateWalletDto: UpdateWalletDto) {
     return this.walletService.update(+id, updateWalletDto);
@@ -57,5 +52,11 @@ export class WalletController {
   @Post('mine')
   mineBlock(@Req() req: RequestWithUser) {
     return this.walletApiService.mineBlock(req.user.firebaseUid);
+  }
+
+  @Auth()
+  @Get('balance')
+  getBalance(@Req() req: RequestWithUser) {
+    return this.walletApiService.getBalance(req.user.firebaseUid);
   }
 }

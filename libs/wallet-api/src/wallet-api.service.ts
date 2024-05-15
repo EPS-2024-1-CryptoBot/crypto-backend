@@ -41,4 +41,21 @@ export class WalletApiService {
       console.error('ALERTA DE ERRO: ', JSON.stringify(error.response.data));
     }
   }
+
+  async getBalance(user: string) {
+    console.log(user);
+    try {
+      const result = await walletApi.get('/get_balance', {
+        params: {
+          user,
+        },
+      });
+
+      console.log(result);
+
+      return result.data;
+    } catch (error) {
+      console.error('ALERTA DE ERRO: ', JSON.stringify(error.response.data));
+    }
+  }
 }
