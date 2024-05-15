@@ -123,6 +123,8 @@ jobs:
             aws configure set region ${{ vars.AWS_DEFAULT_REGION }}
             aws --profile default configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws --profile default configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            docker stop backend_server
+            docker system prune -f -a
             sudo su && \
             export REGISTRY=${{ steps.login-ecr.outputs.registry }} && \
             export REPOSITORY=${{ vars.ECR_REPO_NAME }} && \
