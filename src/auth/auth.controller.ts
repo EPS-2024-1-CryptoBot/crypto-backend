@@ -9,7 +9,7 @@ import { RsaApiService } from '@/rsa-api';
 export class AuthController {
   constructor(
     private authService: AuthService,
-    private readonly rsaApiService:  RsaApiService
+    private readonly rsaApiService: RsaApiService,
   ) {}
 
   @Post('login')
@@ -20,7 +20,7 @@ export class AuthController {
   @Post('register')
   async register(@Body() registerDto: RegisterDto) {
     const keys = await this.rsaApiService.getKeys();
-    
+
     return this.authService.register(
       registerDto.email,
       registerDto.token,
@@ -28,7 +28,7 @@ export class AuthController {
       registerDto.lastName,
       registerDto.firebaseUid,
       keys.data.public_key,
-      keys.data.private_encrypted_key
+      keys.data.private_encrypted_key,
     );
   }
 
