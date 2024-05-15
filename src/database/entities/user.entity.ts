@@ -19,6 +19,6 @@ export class User extends Base {
   @Column()
   public_key: string;
 
-  @Column("text", { array: true })
+  @Column('text', { array: true })
   private_key: string[];
 }
