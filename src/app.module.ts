@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { loadConfig } from './app.config';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
@@ -16,8 +15,15 @@ const AppConfig = ConfigModule.forRoot({
 });
 
 @Module({
-  imports: [AppConfig, UserModule, DatabaseModule, AuthModule, WalletModule, WalletApiModule],
+  imports: [
+    AppConfig,
+    UserModule,
+    DatabaseModule,
+    AuthModule,
+    WalletModule,
+    WalletApiModule,
+  ],
   controllers: [AppController],
-  providers: [AppService, FirebaseAdminService],
+  providers: [FirebaseAdminService],
 })
 export class AppModule {}
