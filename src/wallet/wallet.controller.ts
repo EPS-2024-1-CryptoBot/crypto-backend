@@ -59,4 +59,10 @@ export class WalletController {
   getBalance(@Req() req: RequestWithUser) {
     return this.walletApiService.getBalance(req.user.firebaseUid);
   }
+
+  @Auth()
+  @Get('transactions')
+  getTransactions(@Req() req: RequestWithUser) {
+    return this.walletApiService.getTransactions(req.user.firebaseUid);
+  }
 }
