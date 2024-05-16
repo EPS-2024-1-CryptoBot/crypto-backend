@@ -1,5 +1,5 @@
-import { rsaApi } from '@/wallet-api/config';
 import { Injectable } from '@nestjs/common';
+import { rsaApi } from './config';
 
 @Injectable()
 export class RsaApiService {

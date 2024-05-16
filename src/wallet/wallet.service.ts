@@ -4,7 +4,7 @@ import { UpdateWalletDto } from './dto/update-wallet.dto';
 import { WalletApiService } from '@/wallet-api';
 @Injectable()
 export class WalletService {
-  constructor(private readonly walletApiService: WalletApiService) { }
+  constructor(private readonly walletApiService: WalletApiService) {}
   create(createWalletDto: CreateWalletDto) {
     return 'This action adds a new wallet';
   }
