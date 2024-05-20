@@ -40,12 +40,14 @@ help:
 run-local:
 	$(MAKE) up-dev
 build-dev:
+	export $$(grep -v "^#" .secrets | xargs) && \
 	docker build -f Dockerfile.old.prod \
 	--build-arg PORT=$${PORT} \
 	--build-arg JWT_SECRET=$${JWT_SECRET} \
 	--build-arg DATABASE_URL="postgres://postgres:postgres@localhost:5432/cryptobot" \
 	--build-arg URL_WALLET=$${URL_WALLET} \
 	--build-arg URL_RSA=$${URL_RSA} \
+	--build-arg URL_CONSULTANT=$${URL_CONSULTANT} \
 	-t backend:dev .
 up-dev: build-dev
 	docker-compose -f docker-compose-dev.yaml --env-file ./env/dev.env up -d --force-recreate
@@ -75,6 +77,7 @@ build:
 	--build-arg DATABASE_URL=$${DATABASE_URL} \
 	--build-arg URL_WALLET=$${URL_WALLET} \
 	--build-arg URL_RSA=$${URL_RSA} \
+	--build-arg URL_CONSULTANT=$${URL_CONSULTANT} \
 	-t backend:prod .
 run-prod:
 	docker run --name crypto-backend --rm -p $${PORT}:$${PORT} backend:prod
