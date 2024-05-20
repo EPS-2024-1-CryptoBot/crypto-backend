@@ -27,6 +27,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/rsa-api/tsconfig.lib.json"
       }
+    },
+    "consultant": {
+      "type": "library",
+      "root": "libs/consultant",
+      "entryFile": "index",
+      "sourceRoot": "libs/consultant/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/consultant/tsconfig.lib.json"
+      }
     }
   }
 }

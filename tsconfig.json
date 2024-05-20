@@ -33,6 +33,12 @@
       ],
       "@/rsa-api/*": [
         "libs/rsa-api/src/*"
+      ],
+      "@/consultant": [
+        "libs/consultant/src"
+      ],
+      "@/consultant/*": [
+        "libs/consultant/src/*"
       ]
     }
   }
