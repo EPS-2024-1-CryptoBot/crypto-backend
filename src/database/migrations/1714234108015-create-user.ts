@@ -14,7 +14,12 @@ export class CreateUser1714234108015 implements MigrationInterface {
         "email"             citext                      NOT NULL,
         "first_name"        character varying           NOT NULL,
         "last_name"         character varying           NOT NULL,
-        "firebase_uid"      character varying
+        "firebase_uid"      character varying,
+        "public_key"        character varying           NOT NULL,
+        "private_key"       character varying[]         NOT NULL,
+
+        CONSTRAINT "pk_${this.user_table}"          PRIMARY KEY ("id"),
+        CONSTRAINT "uq_${this.user_table}_unique"   UNIQUE      ("email")
     );
     `);
   }
