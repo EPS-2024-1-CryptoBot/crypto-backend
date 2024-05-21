@@ -12,4 +12,8 @@ export class ConsultantService {
   async getCoinListWithSummary() {
     return await this.consultantApiService.getCoinListWithCurrentValue();
   }
+
+  async getCoinHistory(coin: string) {
+    return await this.consultantApiService.coinHistory(coin);
+  }
 }

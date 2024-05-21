@@ -22,4 +22,15 @@ export class ConsultantApiService {
       throw error;
     }
   }
+
+  async coinHistory(coin: string) {
+    try {
+      const response = await consultantApi.get(
+        `/crypto_currency/coins/${coin}/chart`,
+      );
+      return response.data;
+    } catch (error) {
+      return error?.response?.data;
+    }
+  }
 }
