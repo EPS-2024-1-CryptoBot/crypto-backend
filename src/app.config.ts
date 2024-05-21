@@ -59,10 +59,11 @@ export const loadConfig = () => {
     google: {
       firebase_service_account: JSON.parse(firebaseServiceAccount || '{}'),
     },
-    lib: { 
+    lib: {
       wallet: process.env.URL_WALLET,
       rsa: process.env.URL_RSA,
-     },
+      consultant: process.env.URL_CONSULTANT,
+    },
   };
 };
 
