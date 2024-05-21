@@ -48,6 +48,8 @@ build-dev:
 	--build-arg URL_WALLET=$${URL_WALLET} \
 	--build-arg URL_RSA=$${URL_RSA} \
 	--build-arg URL_CONSULTANT=$${URL_CONSULTANT} \
+	--build-arg SYSTEM_PUB_K=$${SYSTEM_PUB_K} \
+	--build-arg SYSTEM_PVT_K=$${SYSTEM_PVT_K} \
 	-t backend:dev .
 up-dev: build-dev
 	docker-compose -f docker-compose-dev.yaml --env-file ./env/dev.env up -d --force-recreate
@@ -78,6 +80,8 @@ build:
 	--build-arg URL_WALLET=$${URL_WALLET} \
 	--build-arg URL_RSA=$${URL_RSA} \
 	--build-arg URL_CONSULTANT=$${URL_CONSULTANT} \
+	--build-arg SYSTEM_PUB_K=$${SYSTEM_PUB_K} \
+	--build-arg SYSTEM_PVT_K=$${SYSTEM_PVT_K} \
 	-t backend:prod .
 run-prod:
 	docker run --name crypto-backend --rm -p $${PORT}:$${PORT} backend:prod

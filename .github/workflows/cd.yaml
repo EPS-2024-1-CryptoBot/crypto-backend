@@ -56,6 +56,8 @@ jobs:
           --build-arg URL_WALLET=${{ secrets.URL_WALLET }} \
           --build-arg URL_RSA=${{ secrets.URL_RSA }} \
           --build-arg URL_CONSULTANT=${{ secrets.URL_CONSULTANT }} \
+          --build-arg SYSTEM_PUB_K=${{ secrets.SYSTEM_PUB_K }} \
+          --build-arg SYSTEM_PVT_K=${{ secrets.SYSTEM_PVT_K }} \
           -f Dockerfile.prod \
           -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
