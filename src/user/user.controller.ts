@@ -1,9 +1,11 @@
-import { Body, Controller, Get, Param, Post, Put, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Req, Res } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Auth } from 'src/auth/auth.decorator';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { User } from 'src/database/entities';
+import { Request, Response } from 'express';
+
 
 @Controller('users')
 @ApiTags('users')
@@ -30,6 +32,18 @@ export class UserController {
   @Get('/:id')
   getUserById(@Param('id') id: string) {
     return this.userService.findById(id);
+  }
+
+  @Get('/destination/:firebaseUid')
+  async getUserByFirebaseUid(@Param('firebaseUid') firebaseUid: string, @Res() res: Response) {
+    try {
+      const user = await this.userService.findByFirebaseUid(firebaseUid);
+      console.log('user', user);
+      return res.status(200).json(user);
+    } catch (error) {
+      console.log("error11", error);
+      return res.status(404).json({ message: error.message || 'An error occurred while searching for the user' });
+    }
   }
 
   @Post()
