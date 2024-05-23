@@ -21,4 +21,7 @@ export class User extends Base {
 
   @Column('text', { array: true })
   private_key: string[];
+
+  @Column({ nullable: true })
+  api_token_binance?: string;
 }
