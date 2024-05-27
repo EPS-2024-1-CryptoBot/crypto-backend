@@ -82,24 +82,26 @@
       "json",
       "ts"
     ],
-    "rootDir": ".",
+    "rootDir": "./",
+    "modulePaths": [
+      "<rootDir>"
+    ],
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "src/**/*.ts",
+      "!src/database/*"
     ],
     "coverageDirectory": "./coverage",
-    "testEnvironment": "node",
-    "roots": [
-      "<rootDir>/src/",
-      "<rootDir>/libs/"
+    "coveragePathIgnorePatterns": [
+      "src/database/"
     ],
-    "moduleNameMapper": {
-      "@/wallet-api(|/.*)$": "<rootDir>/libs/wallet-api/src/$1",
-      "@/rsa-api(|/.*)$": "<rootDir>/libs/rsa-api/src/$1",
-      "@/consultant(|/.*)$": "<rootDir>/libs/consultant/src/$1"
-    }
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "<rootDir>/dist/src/database/migrations/*"
+    ],
+    "testTimeout": 30000
   }
 }
