@@ -102,6 +102,14 @@
     "testPathIgnorePatterns": [
       "<rootDir>/dist/src/database/migrations/*"
     ],
-    "testTimeout": 30000
+    "testTimeout": 30000,
+    "moduleNameMapper": {
+      "@/wallet-api": "<rootDir>/libs/wallet-api/src",
+      "@/wallet-api/(.*)": "<rootDir>/libs/wallet-api/src/$1",
+      "@/rsa-api": "<rootDir>/libs/rsa-api/src",
+      "@/rsa-api/(.*)": "<rootDir>/libs/rsa-api/src/$1",
+      "@/consultant": "<rootDir>/libs/consultant/src",
+      "@/consultant/(.*)": "<rootDir>/libs/consultant/src/$1"
+    }
   }
 }
