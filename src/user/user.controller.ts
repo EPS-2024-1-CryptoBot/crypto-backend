@@ -25,7 +25,6 @@ export class UserController {
   @Auth()
   getProfile(@Req() req: Request) {
     const user = (req as any).user;
-    console.log(user);
     return { success: true, data: { user: user } };
   }
 
@@ -46,10 +45,8 @@ export class UserController {
   ) {
     try {
       const user = await this.userService.findByFirebaseUid(firebaseUid);
-      console.log('user', user);
       return res.status(200).json(user);
     } catch (error) {
-      console.log('error11', error);
       return res.status(404).json({
         message:
           error.message || 'An error occurred while searching for the user',

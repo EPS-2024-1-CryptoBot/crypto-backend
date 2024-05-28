@@ -15,7 +15,7 @@ describe('AuthService', () => {
   let jwtService: JwtService;
   let firebaseAdmin: FirebaseAdminService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthService,

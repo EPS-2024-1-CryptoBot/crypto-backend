@@ -13,7 +13,7 @@ describe('ConsultantController', () => {
   let consultantService: ConsultantService;
   let userService: UserService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ConsultantController],
       providers: [

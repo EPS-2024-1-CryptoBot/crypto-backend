@@ -9,7 +9,7 @@ describe('ConsultantService', () => {
   let consultantApiService: ConsultantApiService;
   let rsaApiService: RsaApiService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ConsultantService,
