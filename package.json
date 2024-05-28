@@ -92,7 +92,9 @@
     },
     "collectCoverageFrom": [
       "src/**/*.ts",
-      "!src/database/*"
+      "!src/database/*",
+      "!src/main.ts",
+      "!src/**/*.module.ts"
     ],
     "coverageDirectory": "./coverage",
     "coveragePathIgnorePatterns": [
