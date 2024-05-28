@@ -31,16 +31,6 @@ export class FirebaseAdminService {
     return this.initialized;
   }
 
-  public async resetPassword(uid: string, password: string): Promise<any> {
-    try {
-      await this.adminInstance.auth().updateUser(uid, {
-        password,
-      });
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
   public async verifyToken(token: string): Promise<any> {
     try {
       await this.adminInstance.auth().verifyIdToken(token);
