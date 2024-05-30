@@ -26,7 +26,7 @@ export class WalletController {
 
   @Post()
   create(@Body() createWalletDto: CreateWalletDto) {
-    return this.walletService.create(createWalletDto);
+    return this.walletService.create();
   }
 
   @Auth()
@@ -40,7 +40,7 @@ export class WalletController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateWalletDto: UpdateWalletDto) {
-    return this.walletService.update(+id, updateWalletDto);
+    return this.walletService.update(+id);
   }
 
   @Delete(':id')

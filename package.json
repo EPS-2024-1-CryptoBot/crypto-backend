@@ -82,24 +82,36 @@
       "json",
       "ts"
     ],
-    "rootDir": ".",
+    "rootDir": "./",
+    "modulePaths": [
+      "<rootDir>"
+    ],
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "src/**/*.ts",
+      "!src/database/*",
+      "!src/main.ts",
+      "!src/**/*.module.ts"
     ],
     "coverageDirectory": "./coverage",
-    "testEnvironment": "node",
-    "roots": [
-      "<rootDir>/src/",
-      "<rootDir>/libs/"
+    "coveragePathIgnorePatterns": [
+      "src/database/"
     ],
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "<rootDir>/dist/src/database/migrations/*"
+    ],
+    "testTimeout": 30000,
     "moduleNameMapper": {
-      "@/wallet-api(|/.*)$": "<rootDir>/libs/wallet-api/src/$1",
-      "@/rsa-api(|/.*)$": "<rootDir>/libs/rsa-api/src/$1",
-      "@/consultant(|/.*)$": "<rootDir>/libs/consultant/src/$1"
+      "@/wallet-api": "<rootDir>/libs/wallet-api/src",
+      "@/wallet-api/(.*)": "<rootDir>/libs/wallet-api/src/$1",
+      "@/rsa-api": "<rootDir>/libs/rsa-api/src",
+      "@/rsa-api/(.*)": "<rootDir>/libs/rsa-api/src/$1",
+      "@/consultant": "<rootDir>/libs/consultant/src",
+      "@/consultant/(.*)": "<rootDir>/libs/consultant/src/$1"
     }
   }
 }
