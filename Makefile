@@ -15,6 +15,8 @@ help:
 	@echo ""
 
 	@echo "$(GREEN)@ DEV$(END)"
+	@printf "$(CYAN)%-20s$(END) %b \n" "sonar-dev:" "Uploads coverage and analyses code to SonarQube locally using '.secrets' file for envs."
+	@echo ""
 	@printf "$(CYAN)%-20s$(END) %b \n" "run-local:" "Runs $(UNDERLINE)docker-compose.yaml$(END) file and runs nest locally"
 	@printf "$(CYAN)%-20s$(END) %b \n" "up-dev:" "Runs $(UNDERLINE)docker-compose-dev.yaml$(END) file only"
 	@printf "$(CYAN)%-20s$(END) %b \n" "act:" "Runs all ./github/workflows GitHub actions workflows"
@@ -23,6 +25,8 @@ help:
 	@echo ""
 
 	@echo "$(RED)@ PROD$(END)"
+	@printf "$(CYAN)%-20s$(END) %b \n" "sonar:" "Uploads coverage and analyses code in production using SonarQube."
+	@echo ""
 	@printf "$(CYAN)%-20s$(END) %b \n" "build:" "Builds a production image as backend:prod"
 	@printf "$(CYAN)%-20s$(END) %b \n" "run-prod:" "Runs backend:prod image locally"
 	@printf "$(CYAN)%-20s$(END) %b \n" "debug-prod:" "Runs backend:prod image locally with interactive $(UNDERLINE)sh$(END)"
@@ -36,6 +40,10 @@ help:
 # DEV
 # include ./env/dev.env
 # export
+sonar-dev:
+	clear
+	export $$(grep -v '^#' .secrets | xargs) && \
+	$(MAKE) sonar
 .PHONY: build-dev up-dev
 run-local:
 	$(MAKE) up-dev
@@ -62,6 +70,21 @@ act:
 # PRODUCTION
 # include ./env/prod.env
 # export
+sonar:
+	sonar-scanner \
+	-Dsonar.projectKey=$$SONAR_PROJECT_KEY \
+	-Dsonar.organization=$$SONAR_ORGANIZATION \
+	-Dsonar.host.url=https://sonarcloud.io \
+	-Dsonar.token=$$SONAR_TOKEN \
+	-Dsonar.sources=src \
+	-Dsonar.javascript.lcov.reportPaths=$$(pwd)/coverage/lcov.info \
+	-Dsonar.language=js \
+	-Dsonar.sourceEncoding=UTF-8 \
+	-Dsonar.exclusions=node_modules/** \
+	-Dsonar.cpd.exclusions=test/**,terraform/** \
+	-Dsonar.coverage.exclusions=test/**,terraform/** \
+	# -Dsonar.qualitygate.wait=true \
+
 stop-prod:
 	docker stop $(docker ps -aqf "name=server")
 deploy-prod:
