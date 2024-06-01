@@ -1,10 +1,10 @@
-import { Controller, Get, Query, Param, Post, Body, Res } from '@nestjs/common';
-import { ConsultantService } from './consultant.service';
-import { UserService } from '../user/user.service';
+import { Body, Controller, Get, Param, Post, Query, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/auth/auth.decorator';
-import { CoinHistoryQuery } from './dto/consultant.dto';
 import { User } from 'src/database/entities';
+import { UserService } from '../user/user.service';
+import { ConsultantService } from './consultant.service';
+import { CoinHistoryQuery } from './dto/consultant.dto';
 
 @Controller('consultant')
 @ApiTags('consultant')
