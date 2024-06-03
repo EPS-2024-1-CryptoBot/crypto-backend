@@ -38,12 +38,10 @@ export class ConsultantController {
   async addApiKeyBinanceToUser(
     @Param('firebaseUid') firebaseUid: string,
     @Param('apiKey') apiKey: string,
-    @Body() user: User,
     @Res() res: any,
   ) {
     try {
       const response = await this.consultantService.addApiKeyBinanceToUser(
-        firebaseUid,
         apiKey,
       );
       console.log("RESPONSEEE", response, firebaseUid)

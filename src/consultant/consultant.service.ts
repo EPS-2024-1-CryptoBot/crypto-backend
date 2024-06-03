@@ -21,7 +21,7 @@ export class ConsultantService {
     return await this.consultantApiService.coinHistory(coin);
   }
 
-  async addApiKeyBinanceToUser(firebaseUid: string, apiKey: string) {
+  async addApiKeyBinanceToUser(apiKey: string) {
     try {
       // const response = await this.consultantApiService.getApiKeyBinanceToUser(
       //   firebaseUid,
