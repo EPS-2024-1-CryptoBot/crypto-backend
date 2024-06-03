@@ -2,6 +2,7 @@
 .secrets
 .terraform
 *.hcl
+.scannerwork
 firebase*.json
 
 # compiled output
@@ -21,7 +22,8 @@ lerna-debug.log*
 .DS_Store
 
 # Tests
-/coverage
+/coverage/*
+!.gitkeep
 /.nyc_output
 
 # IDEs and editors

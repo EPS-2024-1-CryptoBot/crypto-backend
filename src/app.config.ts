@@ -63,7 +63,9 @@ export const loadConfig = () => {
       wallet: process.env.URL_WALLET,
       rsa: process.env.URL_RSA,
       consultant: process.env.URL_CONSULTANT,
-    },
+      system_pub_k: process.env.SYSTEM_PUB_K,
+      system_pvt_k: process.env.SYSTEM_PVT_K,
+     },
   };
 };
 

@@ -31,51 +31,12 @@ export class FirebaseAdminService {
     return this.initialized;
   }
 
-  public async resetPassword(uid: string, password: string): Promise<any> {
-    try {
-      await this.adminInstance.auth().updateUser(uid, {
-        password,
-      });
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
   public async verifyToken(token: string): Promise<any> {
     try {
       await this.adminInstance.auth().verifyIdToken(token);
       return true;
     } catch (error) {
       throw new Error(error);
-    }
-  }
-
-  public async deleteUser(uid: string): Promise<any> {
-    try {
-      await this.adminInstance.auth().deleteUser(uid);
-      return true;
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
-  public async updateEmail(uid: string, newEmail: string): Promise<boolean> {
-    try {
-      const user = await this.adminInstance
-        .auth()
-        .getUserByEmail(newEmail)
-        .then((userRecord) => userRecord.toJSON())
-        .catch(() => false);
-      if (user) {
-        return false;
-      }
-      await this.adminInstance.auth().updateUser(uid, {
-        email: newEmail,
-      });
-      return true;
-    } catch (error) {
-      this._logger.error(error);
-      return false;
     }
   }
 }
