@@ -1,12 +1,8 @@
-
-import {
-    IsNotEmpty,
-} from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 export class CreateWalletDto {
+  @IsNotEmpty()
+  receiver: string;
 
-    @IsNotEmpty()
-    receiver: string
-
-    @IsNotEmpty()
-    amount: number
+  @IsNotEmpty()
+  amount: number;
 }

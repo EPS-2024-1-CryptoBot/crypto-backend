@@ -26,21 +26,26 @@ export class UserService {
     return result.raw[0];
   }
 
-  async updateUserByFirebaseUid(firebaseUid: string, payload: { api_token_binance: string }): Promise<User> {
-    try{
-    const result = await this.userRepository
-      .createQueryBuilder()
-      .update(User)
-      .set({ api_token_binance: payload.api_token_binance })
-      .where('firebaseUid = :firebaseUid', { firebaseUid })
-      .returning('*')
-      .execute();
-    console.log("RESPONSEEE 2", firebaseUid, result)
-    return result.raw[0];
-  } catch (error) {
-    throw new Error(error.message || 'An error occurred while searching for the user');
+  async updateUserByFirebaseUid(
+    firebaseUid: string,
+    payload: { api_token_binance: string },
+  ): Promise<User> {
+    try {
+      const result = await this.userRepository
+        .createQueryBuilder()
+        .update(User)
+        .set({ api_token_binance: payload.api_token_binance })
+        .where('firebaseUid = :firebaseUid', { firebaseUid })
+        .returning('*')
+        .execute();
+
+      return result.raw[0];
+    } catch (error) {
+      throw new Error(
+        error.message || 'An error occurred while searching for the user',
+      );
+    }
   }
-}
 
   async findAll(): Promise<User[]> {
     return await this.userRepository.find();
@@ -55,14 +60,17 @@ export class UserService {
   }
   async findByFirebaseUid(firebaseUid: string): Promise<User> {
     try {
-      const user = await this.userRepository.findOne({ where: { firebaseUid } });
+      const user = await this.userRepository.findOne({
+        where: { firebaseUid },
+      });
       if (!user) {
         throw new Error(`User with Hash ${firebaseUid} not found`);
       }
       return user;
     } catch (error) {
-      throw new Error(error.message || 'An error occurred while searching for the user');
+      throw new Error(
+        error.message || 'An error occurred while searching for the user',
+      );
     }
   }
-  
 }

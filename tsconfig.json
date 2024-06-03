@@ -22,24 +22,12 @@
     "noFallthroughCasesInSwitch": false,
     "resolveJsonModule": true,
     "paths": {
-      "@/wallet-api": [
-        "libs/wallet-api/src"
-      ],
-      "@/wallet-api/*": [
-        "libs/wallet-api/src/*"
-      ],
-      "@/rsa-api": [
-        "libs/rsa-api/src"
-      ],
-      "@/rsa-api/*": [
-        "libs/rsa-api/src/*"
-      ],
-      "@/consultant": [
-        "libs/consultant/src"
-      ],
-      "@/consultant/*": [
-        "libs/consultant/src/*"
-      ]
+      "@/wallet-api": ["libs/wallet-api/src"],
+      "@/wallet-api/*": ["libs/wallet-api/src/*"],
+      "@/rsa-api": ["libs/rsa-api/src"],
+      "@/rsa-api/*": ["libs/rsa-api/src/*"],
+      "@/consultant": ["libs/consultant/src"],
+      "@/consultant/*": ["libs/consultant/src/*"]
     }
   }
 }

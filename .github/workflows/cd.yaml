@@ -7,9 +7,60 @@ on:
       - main
 
 jobs:
+  tests:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_DEFAULT_REGION }}
+
+      - name: Pull Firebase Credentials
+        uses: keithweaver/aws-s3-github-action@v1.0.0
+        with:
+          command: cp
+          source: ${{ vars.FIREBASE_JSON_S3_PATH }}
+          destination: ./env/test/firebase.json
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ vars.AWS_DEFAULT_REGION }}
+      
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install make
+
+      - name: Get Coverage
+        run: |
+          npm i jest
+          npm run test:cov
+
+      - name: Setup SonarQube
+        uses: warchant/setup-sonar-scanner@v7
+
+      - name: Upload coverage to SonarCloud
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
+        run: make sonar
+
+
   build:
     name: Build and Push
     runs-on: ubuntu-22.04
+    needs: tests
     
     steps:
       - name: Checkout code
@@ -56,6 +107,8 @@ jobs:
           --build-arg URL_WALLET=${{ secrets.URL_WALLET }} \
           --build-arg URL_RSA=${{ secrets.URL_RSA }} \
           --build-arg URL_CONSULTANT=${{ secrets.URL_CONSULTANT }} \
+          --build-arg SYSTEM_PUB_K=${{ secrets.SYSTEM_PUB_K }} \
+          --build-arg SYSTEM_PVT_K=${{ secrets.SYSTEM_PVT_K }} \
           -f Dockerfile.prod \
           -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
