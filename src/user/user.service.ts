@@ -35,7 +35,7 @@ export class UserService {
       .where('firebaseUid = :firebaseUid', { firebaseUid })
       .returning('*')
       .execute();
-
+    console.log("RESPONSEEE 2", firebaseUid, result)
     return result.raw[0];
   } catch (error) {
     throw new Error(error.message || 'An error occurred while searching for the user');
