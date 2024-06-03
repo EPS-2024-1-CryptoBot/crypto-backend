@@ -34,20 +34,24 @@ export class ConsultantController {
   }
 
   @Auth()
-  @Post('/binance_api_key/:firebaseUid')
+  @Post('/binance_api_key/:firebaseUid/:apiKey')
   async addApiKeyBinanceToUser(
     @Param('firebaseUid') firebaseUid: string,
+    @Param('apiKey') apiKey: string,
     @Body() user: User,
     @Res() res: any,
   ) {
     try {
       const response = await this.consultantService.addApiKeyBinanceToUser(
         firebaseUid,
+        apiKey,
       );
+      console.log("RESPONSEEE", response, firebaseUid)
       const updated = await this.userService.updateUserByFirebaseUid(
         firebaseUid,
         { api_token_binance: response },
       );
+      console.log("UPDATED", updated)
 
       return res.status(200).json(updated);
     } catch (error) {
