@@ -73,11 +73,12 @@ describe('ConsultantController', () => {
     });
   });
 
+  
   describe('addApiKeyBinanceToUser', () => {
     it('should call consultantService.addApiKeyBinanceToUser and userService.updateUserByFirebaseUid with the correct parameters', async () => {
       const firebaseUid = 'firebaseUid';
-      const user = { api_token_binance: 'apiToken' };
-      const response = 'response';
+      const apiKey = 'apiKey';
+      const response = 'encryptedApiKey';
       const updatedUser = { updated: true };
 
       jest
@@ -92,11 +93,9 @@ describe('ConsultantController', () => {
         json: jest.fn(),
       };
 
-      await controller.addApiKeyBinanceToUser(firebaseUid, user as any, res);
+      await controller.addApiKeyBinanceToUser(firebaseUid, apiKey, res);
 
-      expect(consultantService.addApiKeyBinanceToUser).toHaveBeenCalledWith(
-        firebaseUid,
-      );
+      expect(consultantService.addApiKeyBinanceToUser).toHaveBeenCalledWith(apiKey);
       expect(userService.updateUserByFirebaseUid).toHaveBeenCalledWith(
         firebaseUid,
         { api_token_binance: response },
@@ -107,7 +106,7 @@ describe('ConsultantController', () => {
 
     it('should return 404 if an error occurs', async () => {
       const firebaseUid = 'firebaseUid';
-      const user = { api_token_binance: 'apiToken' };
+      const apiKey = 'apiKey';
       const error = new Error('An error occurred');
       const res = {
         status: jest.fn().mockReturnThis(),
@@ -118,15 +117,12 @@ describe('ConsultantController', () => {
         .spyOn(consultantService, 'addApiKeyBinanceToUser')
         .mockRejectedValue(error);
 
-      await controller.addApiKeyBinanceToUser(firebaseUid, user as any, res);
+      await controller.addApiKeyBinanceToUser(firebaseUid, apiKey, res);
 
-      expect(consultantService.addApiKeyBinanceToUser).toHaveBeenCalledWith(
-        firebaseUid,
-      );
+      expect(consultantService.addApiKeyBinanceToUser).toHaveBeenCalledWith(apiKey);
       expect(res.status).toHaveBeenCalledWith(404);
       expect(res.json).toHaveBeenCalledWith({
-        message:
-          error.message || 'An error occurred while searching for the user',
+        message: error.message || 'An error occurred while searching for the user',
       });
     });
   });
