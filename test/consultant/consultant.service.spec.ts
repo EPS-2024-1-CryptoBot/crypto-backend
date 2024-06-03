@@ -83,12 +83,11 @@ describe('ConsultantService', () => {
   describe('addApiKeyBinanceToUser', () => {
     it('should call RsaApiService.encrypt with the provided api key and public key', async () => {
       // Arrange
-      const firebaseUid = '12345';
       const api_key_binance = 'asdASANLjslnaDLnas8su89oh312yedquasd';
       const public_key = process.env.SYSTEM_PUB_K;
 
       // Act
-      await consultantService.addApiKeyBinanceToUser(firebaseUid);
+      await consultantService.addApiKeyBinanceToUser(api_key_binance);
 
       // Assert
       expect(rsaApiService.encrypt).toHaveBeenCalledWith(
