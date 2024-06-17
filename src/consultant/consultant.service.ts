@@ -52,4 +52,12 @@ export class ConsultantService {
       throw new Error(error);
     }
   }
+
+  async getContractList() {
+    return await this.consultantApiService.contractList();
+  }
+
+  async getBinanceBalance() {
+    return await this.consultantApiService.binanceBalance();
+  }
 }

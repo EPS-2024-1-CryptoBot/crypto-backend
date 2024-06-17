@@ -77,4 +77,14 @@ export class ConsultantController {
       });
     }
   }
+
+  @Get('/contract_list')
+  getContractList() {
+    return this.consultantService.getContractList();
+  }
+
+  @Get('/binance_balance')
+  getBinanceBalance() {
+    return this.consultantService.getBinanceBalance();
+  }
 }
