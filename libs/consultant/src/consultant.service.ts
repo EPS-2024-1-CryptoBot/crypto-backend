@@ -4,9 +4,9 @@ import { PlaceOrderPayload } from 'src/consultant/dto/consultant.dto';
 
 @Injectable()
 export class ConsultantApiService {
-  api_key = 'seu_api_key_aqui';
+  api_key = 'test_api_key';
 
-  secret_key = 'sua_secret_key_aqui';
+  secret_key = 'test_secret_key';
 
   async getCoinListWithCurrentValue() {
     try {
@@ -89,10 +89,13 @@ export class ConsultantApiService {
     try {
       const response = await consultantApi.post(
         '/cryptobot/place_order/binance',
+        null,
         {
-          ...orderPayload,
-          api_key: this.api_key,
-          secret_key: this.secret_key,
+          params: {
+            api_key: this.api_key,
+            secret_key: this.secret_key,
+            ...orderPayload,
+          },
         },
       );
       return response.data;
