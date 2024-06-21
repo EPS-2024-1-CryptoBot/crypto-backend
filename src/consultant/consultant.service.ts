@@ -1,6 +1,7 @@
 import { ConsultantApiService } from '@/consultant';
 import { RsaApiService } from '@/rsa-api';
 import { Injectable } from '@nestjs/common';
+import { PlaceOrderPayload } from './dto/consultant.dto';
 
 @Injectable()
 export class ConsultantService {
@@ -52,5 +53,29 @@ export class ConsultantService {
       console.error('ALERTA DE ERRO: ', error);
       throw new Error(error);
     }
+  }
+
+  async getContractList() {
+    return await this.consultantApiService.contractList();
+  }
+
+  async getBinanceBalance() {
+    return await this.consultantApiService.binanceBalance();
+  }
+
+  async getBinanceSymbolInfo(symbol: string) {
+    return await this.consultantApiService.symbolPrice(symbol);
+  }
+
+  async placeOrder(payload: PlaceOrderPayload) {
+    return await this.consultantApiService.placeOrder(payload);
+  }
+
+  async getOrderInfo(orderId: string, symbol: string) {
+    return await this.consultantApiService.getOrderInfo(orderId, symbol);
+  }
+
+  async cancelOrder(orderId: string, symbol: string) {
+    return await this.consultantApiService.cancelOrder(orderId, symbol);
   }
 }

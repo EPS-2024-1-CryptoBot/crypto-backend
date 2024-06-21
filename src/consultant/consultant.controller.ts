@@ -1,10 +1,19 @@
-import { Body, Controller, Get, Param, Post, Query, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+  Res,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/auth/auth.decorator';
 import { User } from 'src/database/entities';
 import { UserService } from '../user/user.service';
 import { ConsultantService } from './consultant.service';
-import { CoinHistoryQuery } from './dto/consultant.dto';
+import { CoinHistoryQuery, PlaceOrderPayload } from './dto/consultant.dto';
 
 @Controller('consultant')
 @ApiTags('consultant')
@@ -78,5 +87,41 @@ export class ConsultantController {
           error.message || 'An error occurred while searching for the user',
       });
     }
+  }
+
+  @Get('/contract_list')
+  getContractList() {
+    return this.consultantService.getContractList();
+  }
+
+  @Get('/symbol_price')
+  getSymbolPrice(@Query('symbol') symbol: string) {
+    return this.consultantService.getBinanceSymbolInfo(symbol);
+  }
+
+  @Get('/binance_balance')
+  getBinanceBalance() {
+    return this.consultantService.getBinanceBalance();
+  }
+
+  @Post('/place_order')
+  placeOrder(@Body() orderPayload: PlaceOrderPayload) {
+    return this.consultantService.placeOrder(orderPayload);
+  }
+
+  @Get('/order/:orderId/status')
+  getOrderInfo(
+    @Param('orderId') orderId: string,
+    @Query('symbol') symbol: string,
+  ) {
+    return this.consultantService.getOrderInfo(orderId, symbol);
+  }
+
+  @Delete('/order/:orderId')
+  cancelOrder(
+    @Param('orderId') orderId: string,
+    @Query('symbol') symbol: string,
+  ) {
+    return this.consultantService.cancelOrder(orderId, symbol);
   }
 }
