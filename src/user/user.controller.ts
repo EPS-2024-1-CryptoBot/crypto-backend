@@ -9,6 +9,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { UserService } from './user.service';
+import { ConsultantService } from 'src/consultant/consultant.service';
 import { Auth } from 'src/auth/auth.decorator';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -18,7 +19,10 @@ import { Request, Response } from 'express';
 @Controller('users')
 @ApiTags('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly consultantService: ConsultantService,
+  ) {}
 
   // This is just to test Auth decorator
   @Get('/profile')
@@ -60,7 +64,14 @@ export class UserController {
   }
 
   @Put('/:id')
-  updateUser(@Param('id') id: string, @Body() user: UpdateUserDto) {
-    return this.userService.updateUser(id, user as User);
+  async updateUser(@Param('id') id: string, @Body() user: UpdateUserDto) {
+    const api_token_binance = await this.consultantService.addApiKeyBinanceToUser(
+      user.api_token_binance,
+    );
+    const binance_api_secret = await this.consultantService.addApiKeyBinanceToUser(
+      user.binance_api_secret,
+    );
+    const new_user = { ...user, api_token_binance, binance_api_secret };
+    return this.userService.updateUser(id, new_user as User);
   }
 }

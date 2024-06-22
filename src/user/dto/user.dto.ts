@@ -37,13 +37,13 @@ export class UpdateUserDto {
   @IsAlpha()
   @ValidateIf((o) => o.firstName !== undefined)
   firstName: string;
-
   @MinLength(2)
   @MaxLength(20)
   @IsAlpha()
   lastName: string;
-
   firebaseUid: string;
+  binance_api_secret: string;
+  api_token_binance: string;
 }
 
 export class UserDto {
