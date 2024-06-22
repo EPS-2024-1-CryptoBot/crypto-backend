@@ -70,4 +70,18 @@ export class WalletApiService {
       console.error('ALERTA DE ERRO: ', JSON.stringify(error.response.data));
     }
   }
+
+  async getBlockchain(user: string) {
+    try {
+      const result = await walletApi.get('/get_chain', {
+        params: {
+          user,
+        },
+      });
+
+      return result.data;
+    } catch (error) {
+      console.error('ALERTA DE ERRO: ', JSON.stringify(error.response.data));
+    }
+  }
 }

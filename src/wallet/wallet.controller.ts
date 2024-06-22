@@ -65,4 +65,10 @@ export class WalletController {
   getTransactions(@Req() req: RequestWithUser) {
     return this.walletApiService.getTransactions(req.user.firebaseUid);
   }
+
+  @Auth()
+  @Get('blockchain')
+  getBlockchain(@Req() req: RequestWithUser) {
+    return this.walletApiService.getBlockchain(req.user.firebaseUid);
+  }
 }
