@@ -26,5 +26,5 @@ export class User extends Base {
   api_token_binance?: string;
 
   @Column({ nullable: true })
-  binanceApiSecret: string;
+  binance_api_secret?: string;
 }

@@ -24,11 +24,9 @@ export class ConsultantService {
 
   async addApiKeyBinanceToUser(apiKey: string) {
     try {
-      // const response = await this.consultantApiService.getApiKeyBinanceToUser(
-      //   firebaseUid,
-      // );
-      // const api_key_binance = 'asdASANLjslnaDLnas8su89oh312yedquasd';
       const public_key = process.env.SYSTEM_PUB_K;
+      console.log("public_key", public_key);
+      console.log("apiKey", apiKey);
       const response_rsa = await this.RsaApiService.encrypt(
         apiKey,
         public_key,
@@ -55,8 +53,10 @@ export class ConsultantService {
     }
   }
 
-  async getContractList() {
-    return await this.consultantApiService.contractList();
+  async getContractList(api_token_binance: string, binance_api_secret: string) {
+    console.log("api_token_binance", api_token_binance);
+    console.log("binance_api_secret", binance_api_secret);
+    return await this.consultantApiService.contractList(api_token_binance, binance_api_secret);
   }
 
   async getBinanceBalance() {

@@ -93,10 +93,13 @@ export class ConsultantController {
       );
     }
   }
-
-  @Get('/contract_list')
-  getContractList() {
-    return this.consultantService.getContractList();
+  // const res = await api.post('/consultant/contract_list', currentUser);
+       
+  @Post('/contract_list')
+  async getContractList(@Body() user: any) {
+    const api_token_binance = await this.consultantService.getApiKeyBinanceToUser(user.api_token_binance);
+    const binance_api_secret = await this.consultantService.getApiKeyBinanceToUser(user.binance_api_secret);
+    return this.consultantService.getContractList(api_token_binance, binance_api_secret);
   }
 
   @Get('/symbol_price')

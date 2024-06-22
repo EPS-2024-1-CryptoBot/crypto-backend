@@ -56,12 +56,14 @@ export class ConsultantApiService {
     }
   }
 
-  async contractList() {
+  async contractList(api_token_binance: string, binance_api_secret: string) {
     try {
       const response = await consultantApi.get('/cryptobot/contracts/binance', {
         params: {
           api_key: this.api_key,
           secret_key: this.secret_key,
+          // api_token_binance,
+          // binance_api_secret,
         },
       });
       return response.data;
