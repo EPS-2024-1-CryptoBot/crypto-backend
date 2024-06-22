@@ -16,9 +16,6 @@ import { UserService } from '../user/user.service';
 import { ConsultantService } from './consultant.service';
 import { CoinHistoryQuery, PlaceOrderPayload } from './dto/consultant.dto';
 
-const availableCoins = require('../mock/availableCoins.json');
-const coinHistory = require('../mock/coinHistory.json');
-
 @Controller('consultant')
 @ApiTags('consultant')
 export class ConsultantController {
@@ -36,15 +33,14 @@ export class ConsultantController {
   @Auth()
   @Get('/coin_list_with_summary')
   getCoinListWithSummary() {
-    console.log("AVAILABLE COINS", availableCoins);
-    return availableCoins;
+    return this.consultantService.getCoinListWithSummary();
   }
 
   @Auth()
   @Get('/coin_history')
   getCoinHistory(@Query() query: CoinHistoryQuery) {
-    console.log("COIN HISTORY", coinHistory);
-    return coinHistory;
+    const { coin } = query;
+    return this.consultantService.getCoinHistory(coin);
   }
 
   @Auth()
@@ -55,16 +51,21 @@ export class ConsultantController {
     @Res() res: any,
   ) {
     try {
-      const response = await this.consultantService.addApiKeyBinanceToUser(apiKey);
-      console.log("RESPONSE", response, firebaseUid);
-      const updated = await this.userService.updateUserByFirebaseUid(firebaseUid, {
-        api_token_binance: response,
-      });
-      console.log("UPDATED", updated);
+      const response = await this.consultantService.addApiKeyBinanceToUser(
+        apiKey,
+      );
+      console.log('RESPONSE', response, firebaseUid);
+      const updated = await this.userService.updateUserByFirebaseUid(
+        firebaseUid,
+        {
+          api_token_binance: response,
+        },
+      );
+      console.log('UPDATED', updated);
 
       return res.status(HttpStatus.OK).json(updated);
     } catch (error) {
-      console.error("ERROR", error);
+      console.error('ERROR', error);
       throw new HttpException(
         error.message || 'An error occurred while adding the API key',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -80,10 +81,12 @@ export class ConsultantController {
     @Res() res: any,
   ) {
     try {
-      const response = await this.consultantService.getApiKeyBinanceToUser(user.api_token_binance);
+      const response = await this.consultantService.getApiKeyBinanceToUser(
+        user.api_token_binance,
+      );
       return res.status(HttpStatus.OK).json(response);
     } catch (error) {
-      console.error("ERROR", error);
+      console.error('ERROR', error);
       throw new HttpException(
         error.message || 'An error occurred while decrypting the API key',
         HttpStatus.INTERNAL_SERVER_ERROR,
