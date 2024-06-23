@@ -18,7 +18,7 @@ help:
 	@printf "$(CYAN)%-20s$(END) %b \n" "sonar-dev:" "Uploads coverage and analyses code to SonarQube locally using '.secrets' file for envs."
 	@echo ""
 	@printf "$(CYAN)%-20s$(END) %b \n" "run-local:" "Runs $(UNDERLINE)docker-compose.yaml$(END) file and runs nest locally"
-	@printf "$(CYAN)%-20s$(END) %b \n" "up-dev:" "Runs $(UNDERLINE)docker-compose-dev.yaml$(END) file only"
+	@printf "$(CYAN)%-20s$(END) %b \n" "run-dev:" "Runs $(UNDERLINE)docker-compose-dev.yaml$(END) file only"
 	@printf "$(CYAN)%-20s$(END) %b \n" "act:" "Runs all ./github/workflows GitHub actions workflows"
 	@echo ""
 	@printf "$(CYAN)%-20s$(END) %b \n" "tf-apply-dev:" "Runs terraform apply -auto-approve with .secrets and .vars files"
@@ -44,9 +44,9 @@ sonar-dev:
 	clear
 	export $$(grep -v '^#' .secrets | xargs) && \
 	$(MAKE) sonar
-.PHONY: build-dev up-dev
+.PHONY: build-dev run-dev
 run-local:
-	$(MAKE) up-dev
+	$(MAKE) run-dev
 build-dev:
 	export $$(grep -v "^#" .secrets | xargs) && \
 	docker build -f Dockerfile.old.prod \
@@ -59,7 +59,7 @@ build-dev:
 	--build-arg SYSTEM_PUB_K=$${SYSTEM_PUB_K} \
 	--build-arg SYSTEM_PVT_K=$${SYSTEM_PVT_K} \
 	-t backend:dev .
-up-dev: build-dev
+run-dev: build-dev
 	docker-compose -f docker-compose-dev.yaml --env-file ./env/dev.env up -d --force-recreate
 
 act:
