@@ -26,13 +26,13 @@ export class ConsultantService {
   async addApiKeyBinanceToUser(apiKey: string) {
     try {
       const public_key = process.env.SYSTEM_PUB_K;
-      console.log('public_key', public_key);
-      console.log('apiKey', apiKey);
+      // console.log('public_key', public_key);
+      // console.log('apiKey', apiKey);
       const response_rsa = await this.rsaApiService.encrypt(apiKey, public_key);
       return response_rsa.data.encrypted_message;
     } catch (error) {
       console.error('ALERTA DE ERRO: ', error);
-      throw new Error(error);
+      throw error;
     }
   }
 

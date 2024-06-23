@@ -65,15 +65,27 @@ export class UserController {
 
   @Put('/:id')
   async updateUser(@Param('id') id: string, @Body() user: UpdateUserDto) {
-    const api_token_binance =
-      await this.consultantService.addApiKeyBinanceToUser(
-        user.api_token_binance,
-      );
-    const binance_api_secret =
-      await this.consultantService.addApiKeyBinanceToUser(
-        user.binance_api_secret,
-      );
-    const new_user = { ...user, api_token_binance, binance_api_secret };
-    return this.userService.updateUser(id, new_user as User);
+    try {
+      const api_token_binance =
+        await this.consultantService.addApiKeyBinanceToUser(
+          user.api_token_binance,
+        );
+      console.log('api_token_binance', api_token_binance);
+      const binance_api_secret =
+        await this.consultantService.addApiKeyBinanceToUser(
+          user.binance_api_secret,
+        );
+      console.log('binance_api_secret', binance_api_secret);
+
+      if (!api_token_binance || !binance_api_secret) {
+       return { success: false, message: "As chaves precisam ter no máximo 150 caracteres." };
+      }
+
+      const new_user = { ...user, api_token_binance, binance_api_secret };
+      return this.userService.updateUser(id, new_user as User);
+    } catch (error) {
+      console.error('ALERTA DE ERRO: ', error);
+      return error;
+    }
   }
 }
