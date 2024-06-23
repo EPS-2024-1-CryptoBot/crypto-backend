@@ -2,6 +2,7 @@ import { ConsultantApiService } from '@/consultant';
 import { RsaApiService } from '@/rsa-api';
 import { Injectable } from '@nestjs/common';
 import { PlaceOrderPayload } from './dto/consultant.dto';
+import { stockCompassApi } from './consultant.utils';
 
 @Injectable()
 export class ConsultantService {
@@ -82,5 +83,17 @@ export class ConsultantService {
 
   async cancelOrder(orderId: string, symbol: string) {
     return await this.consultantApiService.cancelOrder(orderId, symbol);
+  }
+
+  async getStockSummary(ticker: string) {
+    try {
+      const result = await stockCompassApi.get(
+        `/api/stocks/stock-summary/${ticker}`,
+      );
+      return result.data;
+    } catch (error) {
+      console.error('ALERTA DE ERRO: ', error);
+      return { error: 'Error to get stock summary' };
+    }
   }
 }

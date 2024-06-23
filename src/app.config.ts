@@ -65,7 +65,10 @@ export const loadConfig = () => {
       consultant: process.env.URL_CONSULTANT,
       system_pub_k: process.env.SYSTEM_PUB_K,
       system_pvt_k: process.env.SYSTEM_PVT_K,
-     },
+    },
+    integration: {
+      stock_compass_api: process.env.STOCK_COMPASS_API_URL,
+    },
   };
 };
 

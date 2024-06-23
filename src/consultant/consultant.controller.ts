@@ -14,6 +14,7 @@ import { UserService } from '../user/user.service';
 import { ConsultantService } from './consultant.service';
 import { CoinHistoryQuery, PlaceOrderPayload } from './dto/consultant.dto';
 import { RequestWithUser } from 'src/commomTypes';
+import { availableTickers } from './consultant.utils';
 
 @Controller('consultant')
 @ApiTags('consultant')
@@ -78,5 +79,18 @@ export class ConsultantController {
     @Query('symbol') symbol: string,
   ) {
     return this.consultantService.cancelOrder(orderId, symbol);
+  }
+
+  @Get('tickers')
+  getTickers() {
+    return availableTickers;
+  }
+
+  @Get('stock_compass/stocks/stock-summary/:ticker')
+  getStockSummary(@Param('ticker') ticker: string) {
+    if (!availableTickers.some((t) => t.ticker === ticker)) {
+      return { error: 'Ticker not found' };
+    }
+    return this.consultantService.getStockSummary(ticker);
   }
 }
