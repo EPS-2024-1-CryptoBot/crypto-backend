@@ -2,10 +2,11 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/auth.dto';
 import { RegisterDto } from './dto/auth.dto';
-import { Auth } from './auth.decorator';
 import { RsaApiService } from '@/rsa-api';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(
     private authService: AuthService,
@@ -30,11 +31,5 @@ export class AuthController {
       keys.data.public_key,
       keys.data.private_encrypted_key,
     );
-  }
-
-  @Auth()
-  @Post('logout')
-  async logout() {
-    console.log('Logout testing the JWTGuard');
   }
 }
