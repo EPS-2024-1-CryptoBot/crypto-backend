@@ -11,7 +11,6 @@ import { Repository } from 'typeorm';
 describe('ConsultantController', () => {
   let controller: ConsultantController;
   let consultantService: ConsultantService;
-  let userService: UserService;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -44,7 +43,6 @@ describe('ConsultantController', () => {
 
     controller = module.get<ConsultantController>(ConsultantController);
     consultantService = module.get<ConsultantService>(ConsultantService);
-    userService = module.get<UserService>(UserService);
   });
 
   describe('getCoinList', () => {
@@ -70,109 +68,6 @@ describe('ConsultantController', () => {
       const spy = jest.spyOn(consultantService, 'getCoinHistory');
       controller.getCoinHistory(query);
       expect(spy).toHaveBeenCalledWith(coin);
-    });
-  });
-
-  
-  describe('addApiKeyBinanceToUser', () => {
-    it('should call consultantService.addApiKeyBinanceToUser and userService.updateUserByFirebaseUid with the correct parameters', async () => {
-      const firebaseUid = 'firebaseUid';
-      const apiKey = 'apiKey';
-      const response = 'encryptedApiKey';
-      const updatedUser = { updated: true };
-
-      jest
-        .spyOn(consultantService, 'addApiKeyBinanceToUser')
-        .mockResolvedValue(response);
-      jest
-        .spyOn(userService, 'updateUserByFirebaseUid')
-        .mockResolvedValue(updatedUser as any);
-
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
-
-      await controller.addApiKeyBinanceToUser(firebaseUid, apiKey, res);
-
-      expect(consultantService.addApiKeyBinanceToUser).toHaveBeenCalledWith(apiKey);
-      expect(userService.updateUserByFirebaseUid).toHaveBeenCalledWith(
-        firebaseUid,
-        { api_token_binance: response },
-      );
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith(updatedUser);
-    });
-
-    it('should return 404 if an error occurs', async () => {
-      const firebaseUid = 'firebaseUid';
-      const apiKey = 'apiKey';
-      const error = new Error('An error occurred');
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
-
-      jest
-        .spyOn(consultantService, 'addApiKeyBinanceToUser')
-        .mockRejectedValue(error);
-
-      await controller.addApiKeyBinanceToUser(firebaseUid, apiKey, res);
-
-      expect(consultantService.addApiKeyBinanceToUser).toHaveBeenCalledWith(apiKey);
-      expect(res.status).toHaveBeenCalledWith(404);
-      expect(res.json).toHaveBeenCalledWith({
-        message: error.message || 'An error occurred while searching for the user',
-      });
-    });
-  });
-
-  describe('decryptApiKeyBinance', () => {
-    it('should call consultantService.getApiKeyBinanceToUser and return the response', async () => {
-      const firebaseUid = 'firebaseUid';
-      const user = { api_token_binance: 'apiToken' };
-      const response = 'decryptedApiKey';
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
-
-      jest
-        .spyOn(consultantService, 'getApiKeyBinanceToUser')
-        .mockResolvedValue(response);
-
-      await controller.decryptApiKeyBinance(firebaseUid, user, res);
-
-      expect(consultantService.getApiKeyBinanceToUser).toHaveBeenCalledWith(
-        user.api_token_binance,
-      );
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith(response);
-    });
-
-    it('should return 404 if an error occurs', async () => {
-      const firebaseUid = 'firebaseUid';
-      const user = { api_token_binance: 'apiToken' };
-      const error = new Error('An error occurred');
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
-
-      jest
-        .spyOn(consultantService, 'getApiKeyBinanceToUser')
-        .mockRejectedValue(error);
-
-      await controller.decryptApiKeyBinance(firebaseUid, user, res);
-
-      expect(consultantService.getApiKeyBinanceToUser).toHaveBeenCalledWith(
-        user.api_token_binance,
-      );
-      expect(res.status).toHaveBeenCalledWith(404);
-      expect(res.json).toHaveBeenCalledWith({
-        message:
-          error.message || 'An error occurred while searching for the user',
-      });
     });
   });
 });

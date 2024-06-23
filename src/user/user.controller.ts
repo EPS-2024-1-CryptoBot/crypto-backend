@@ -65,12 +65,14 @@ export class UserController {
 
   @Put('/:id')
   async updateUser(@Param('id') id: string, @Body() user: UpdateUserDto) {
-    const api_token_binance = await this.consultantService.addApiKeyBinanceToUser(
-      user.api_token_binance,
-    );
-    const binance_api_secret = await this.consultantService.addApiKeyBinanceToUser(
-      user.binance_api_secret,
-    );
+    const api_token_binance =
+      await this.consultantService.addApiKeyBinanceToUser(
+        user.api_token_binance,
+      );
+    const binance_api_secret =
+      await this.consultantService.addApiKeyBinanceToUser(
+        user.binance_api_secret,
+      );
     const new_user = { ...user, api_token_binance, binance_api_secret };
     return this.userService.updateUser(id, new_user as User);
   }

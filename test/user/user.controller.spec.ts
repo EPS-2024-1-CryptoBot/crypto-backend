@@ -6,10 +6,14 @@ import { UserController } from 'src/user/user.controller';
 import { UserService } from 'src/user/user.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ConsultantService } from 'src/consultant/consultant.service';
+import { ConsultantApiService } from '@/consultant';
+import { RsaApiService } from '@/rsa-api';
 
 describe('UserController', () => {
   let controller: UserController;
   let userService: UserService;
+  let consultantService: ConsultantService;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -20,11 +24,15 @@ describe('UserController', () => {
           provide: getRepositoryToken(User),
           useClass: Repository,
         },
+        ConsultantService,
+        ConsultantApiService,
+        RsaApiService,
       ],
     }).compile();
 
     controller = module.get<UserController>(UserController);
     userService = module.get<UserService>(UserService);
+    consultantService = module.get<ConsultantService>(ConsultantService);
   });
 
   describe('getProfile', () => {
@@ -108,12 +116,16 @@ describe('UserController', () => {
   });
 
   describe('updateUser', () => {
-    it('should update the user with the specified id', () => {
+    it('should update the user with the specified id', async () => {
       const updateUserDto = { name: 'John Doe' } as unknown as UpdateUserDto;
       const updatedUser = { id: '1', name: 'John Doe' } as unknown as User;
+      jest
+        .spyOn(consultantService, 'addApiKeyBinanceToUser')
+        .mockResolvedValue('api_token_binance');
+
       jest.spyOn(userService, 'updateUser').mockReturnValue(updatedUser as any);
 
-      const result = controller.updateUser('1', updateUserDto);
+      const result = await controller.updateUser('1', updateUserDto);
 
       expect(result).toEqual(updatedUser);
     });

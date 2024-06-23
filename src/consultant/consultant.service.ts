@@ -7,7 +7,7 @@ import { PlaceOrderPayload } from './dto/consultant.dto';
 export class ConsultantService {
   constructor(
     private readonly consultantApiService: ConsultantApiService,
-    private readonly RsaApiService: RsaApiService,
+    private readonly rsaApiService: RsaApiService,
   ) {}
 
   async getCoinList() {
@@ -25,12 +25,9 @@ export class ConsultantService {
   async addApiKeyBinanceToUser(apiKey: string) {
     try {
       const public_key = process.env.SYSTEM_PUB_K;
-      console.log("public_key", public_key);
-      console.log("apiKey", apiKey);
-      const response_rsa = await this.RsaApiService.encrypt(
-        apiKey,
-        public_key,
-      );
+      console.log('public_key', public_key);
+      console.log('apiKey', apiKey);
+      const response_rsa = await this.rsaApiService.encrypt(apiKey, public_key);
       return response_rsa.data.encrypted_message;
     } catch (error) {
       console.error('ALERTA DE ERRO: ', error);
@@ -40,9 +37,9 @@ export class ConsultantService {
 
   async getApiKeyBinanceToUser(api_key_binance: string) {
     try {
-      console.log("api_key_binance");
+      console.log('api_key_binance');
       const private_key = process.env.SYSTEM_PVT_K;
-      const response = await this.RsaApiService.decrypt(
+      const response = await this.rsaApiService.decrypt(
         api_key_binance,
         private_key,
       );
@@ -53,10 +50,18 @@ export class ConsultantService {
     }
   }
 
-  async getContractList(api_token_binance: string, binance_api_secret: string) {
-    console.log("api_token_binance", api_token_binance);
-    console.log("binance_api_secret", binance_api_secret);
-    return await this.consultantApiService.contractList(api_token_binance, binance_api_secret);
+  async getContractList(user: any) {
+    const api_token_binance = await this.getApiKeyBinanceToUser(
+      user.api_token_binance,
+    );
+    const binance_api_secret = await this.getApiKeyBinanceToUser(
+      user.binance_api_secret,
+    );
+
+    return await this.consultantApiService.contractList(
+      api_token_binance,
+      binance_api_secret,
+    );
   }
 
   async getBinanceBalance() {

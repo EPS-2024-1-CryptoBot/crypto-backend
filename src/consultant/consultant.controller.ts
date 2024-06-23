@@ -6,15 +6,14 @@ import {
   Param,
   Post,
   Query,
-  Res,
-  HttpStatus,
-  HttpException,
+  Req,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/auth/auth.decorator';
 import { UserService } from '../user/user.service';
 import { ConsultantService } from './consultant.service';
 import { CoinHistoryQuery, PlaceOrderPayload } from './dto/consultant.dto';
+import { RequestWithUser } from 'src/commomTypes';
 
 @Controller('consultant')
 @ApiTags('consultant')
@@ -44,62 +43,10 @@ export class ConsultantController {
   }
 
   @Auth()
-  @Post('/binance_api_key/:firebaseUid/:apiKey')
-  async addApiKeyBinanceToUser(
-    @Param('firebaseUid') firebaseUid: string,
-    @Param('apiKey') apiKey: string,
-    @Res() res: any,
-  ) {
-    try {
-      const response = await this.consultantService.addApiKeyBinanceToUser(
-        apiKey,
-      );
-      console.log('RESPONSE', response, firebaseUid);
-      const updated = await this.userService.updateUserByFirebaseUid(
-        firebaseUid,
-        {
-          api_token_binance: response,
-        },
-      );
-      console.log('UPDATED', updated);
-
-      return res.status(HttpStatus.OK).json(updated);
-    } catch (error) {
-      console.error('ERROR', error);
-      throw new HttpException(
-        error.message || 'An error occurred while adding the API key',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
-
-  @Auth()
-  @Post('/decrypt_binance_api_key/:firebaseUid')
-  async decryptApiKeyBinance(
-    @Param('firebaseUid') firebaseUid: string,
-    @Body() user: { api_token_binance: string },
-    @Res() res: any,
-  ) {
-    try {
-      const response = await this.consultantService.getApiKeyBinanceToUser(
-        user.api_token_binance,
-      );
-      return res.status(HttpStatus.OK).json(response);
-    } catch (error) {
-      console.error('ERROR', error);
-      throw new HttpException(
-        error.message || 'An error occurred while decrypting the API key',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
-  // const res = await api.post('/consultant/contract_list', currentUser);
-       
-  @Post('/contract_list')
-  async getContractList(@Body() user: any) {
-    const api_token_binance = await this.consultantService.getApiKeyBinanceToUser(user.api_token_binance);
-    const binance_api_secret = await this.consultantService.getApiKeyBinanceToUser(user.binance_api_secret);
-    return this.consultantService.getContractList(api_token_binance, binance_api_secret);
+  @Get('/contract_list')
+  async getContractList(@Req() req: RequestWithUser) {
+    const { user } = req;
+    return this.consultantService.getContractList(user);
   }
 
   @Get('/symbol_price')
