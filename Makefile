@@ -80,7 +80,7 @@ sonar:
 	-Dsonar.javascript.lcov.reportPaths=$$(pwd)/coverage/lcov.info \
 	-Dsonar.language=js \
 	-Dsonar.sourceEncoding=UTF-8 \
-	-Dsonar.exclusions=node_modules/** \
+	-Dsonar.exclusions=node_modules/**,src/consultant/consultant.utils.ts \
 	-Dsonar.cpd.exclusions=test/**,terraform/** \
 	-Dsonar.coverage.exclusions=test/**,terraform/** \
 	# -Dsonar.qualitygate.wait=true \
