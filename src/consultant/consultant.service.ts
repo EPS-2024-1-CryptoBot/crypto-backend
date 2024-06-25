@@ -1,8 +1,8 @@
 import { ConsultantApiService } from '@/consultant';
 import { RsaApiService } from '@/rsa-api';
 import { Injectable } from '@nestjs/common';
-import { PlaceOrderPayload } from './dto/consultant.dto';
 import { stockCompassApi } from './consultant.utils';
+import { PlaceOrderPayload } from './dto/consultant.dto';
 
 @Injectable()
 export class ConsultantService {
@@ -78,11 +78,11 @@ export class ConsultantService {
   }
 
   async getOrderInfo(orderId: string, symbol: string) {
-    return await this.consultantApiService.getOrderInfo(orderId, symbol);
+    return await this.consultantApiService.getOrderInfo(symbol, orderId);
   }
 
   async cancelOrder(orderId: string, symbol: string) {
-    return await this.consultantApiService.cancelOrder(orderId, symbol);
+    return await this.consultantApiService.cancelOrder(symbol, orderId);
   }
 
   async getStockSummary(ticker: string) {
