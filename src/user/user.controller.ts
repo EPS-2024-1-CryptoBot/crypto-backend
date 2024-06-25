@@ -8,13 +8,13 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
-import { UserService } from './user.service';
-import { ConsultantService } from 'src/consultant/consultant.service';
-import { Auth } from 'src/auth/auth.decorator';
-import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { User } from 'src/database/entities';
 import { Request, Response } from 'express';
+import { Auth } from 'src/auth/auth.decorator';
+import { ConsultantService } from 'src/consultant/consultant.service';
+import { User } from 'src/database/entities';
+import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import { UserService } from './user.service';
 
 @Controller('users')
 @ApiTags('users')
@@ -78,7 +78,10 @@ export class UserController {
       console.log('binance_api_secret', binance_api_secret);
 
       if (!api_token_binance || !binance_api_secret) {
-       return { success: false, message: "As chaves precisam ter no máximo 150 caracteres." };
+        return {
+          success: false,
+          message: 'As chaves precisam ter no máximo 150 caracteres.',
+        };
       }
 
       const new_user = { ...user, api_token_binance, binance_api_secret };
