@@ -8,8 +8,8 @@ services:
       - "3000:3000"
     depends_on:
       - pgsql
-    env_file:
-      - ./env/dev.env
+    networks:
+      - pg-net
 
   pgsql:
     image: postgres
@@ -22,6 +22,8 @@ services:
       - "5432:5432"
     volumes:
       - ./pgdata:/var/lib/pgsql/data
+    networks:
+      - pg-net
 
   pgadmin:
     image: dpage/pgadmin4
@@ -38,3 +40,9 @@ services:
       - pgsql
     volumes:
       - ./pgamdin-data/:/var/lib/pgadmin
+    networks:
+      - pg-net
+
+networks:
+  pg-net:
+    driver: bridge

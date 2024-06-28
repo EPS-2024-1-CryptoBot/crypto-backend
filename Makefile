@@ -11,29 +11,33 @@ END = \033[0m
 
 help:
 	@echo "$(YELLOW)# ------------------- Makefile commands ------------------- #$(END)"
-	@printf "$(CYAN)%-20s$(END) %b \n" "help:" "Shows this message"
+	@echo ""
+	@echo "$(GREEN)## DEV$(END)"
+	@printf "$(CYAN)%-20s$(END) %b \n" "sonar-dev:" "Runs SonarQube analysis for development"
+	@printf "$(CYAN)%-20s$(END) %b \n" "build-dev:" "Builds the development Docker image"
+	@printf "$(CYAN)%-20s$(END) %b \n" "run-dev:" "Runs the development Docker containers"
+	@printf "$(CYAN)%-20s$(END) %b \n" "dev:" "Builds and runs the development environment"
+	@printf "$(CYAN)%-20s$(END) %b \n" "act:" "Runs all GitHub actions workflows using 'act'"
 	@echo ""
 
-	@echo "$(GREEN)@ DEV$(END)"
-	@printf "$(CYAN)%-20s$(END) %b \n" "sonar-dev:" "Uploads coverage and analyses code to SonarQube locally using '.secrets' file for envs."
-	@echo ""
-	@printf "$(CYAN)%-20s$(END) %b \n" "run-local:" "Runs $(UNDERLINE)docker-compose.yaml$(END) file and runs nest locally"
-	@printf "$(CYAN)%-20s$(END) %b \n" "run-dev:" "Runs $(UNDERLINE)docker-compose-dev.yaml$(END) file only"
-	@printf "$(CYAN)%-20s$(END) %b \n" "act:" "Runs all ./github/workflows GitHub actions workflows"
-	@echo ""
-	@printf "$(CYAN)%-20s$(END) %b \n" "tf-apply-dev:" "Runs terraform apply -auto-approve with .secrets and .vars files"
+	@echo "$(RED)## PRODUCTION$(END)"
+	@printf "$(CYAN)%-20s$(END) %b \n" "sonar:" "Runs SonarQube analysis for production"
+	@printf "$(CYAN)%-20s$(END) %b \n" "stop-prod:" "Stops the production Docker containers"
+	@printf "$(CYAN)%-20s$(END) %b \n" "deploy-prod:" "Deploys the production Docker containers"
+	@printf "$(CYAN)%-20s$(END) %b \n" "zip:" "Creates a zip archive of necessary files for production"
+	@printf "$(CYAN)%-20s$(END) %b \n" "install:" "Installs npm dependencies"
+	@printf "$(CYAN)%-20s$(END) %b \n" "local-build:" "Builds the application locally"
+	@printf "$(CYAN)%-20s$(END) %b \n" "build:" "Builds the production Docker image"
+	@printf "$(CYAN)%-20s$(END) %b \n" "run-prod:" "Runs the production Docker container locally"
+	@printf "$(CYAN)%-20s$(END) %b \n" "debug-prod:" "Runs the production Docker container with interactive shell"
 	@echo ""
 
-	@echo "$(RED)@ PROD$(END)"
-	@printf "$(CYAN)%-20s$(END) %b \n" "sonar:" "Uploads coverage and analyses code in production using SonarQube."
+	@echo "$(BLUE)## TERRAFORM$(END)"
+	@printf "$(CYAN)%-20s$(END) %b \n" "tf-init:" "Initializes Terraform in the 'terraform' directory"
+	@printf "$(CYAN)%-20s$(END) %b \n" "tf-plan:" "Runs Terraform plan in the 'terraform' directory"
+	@printf "$(CYAN)%-20s$(END) %b \n" "tf-apply:" "Applies Terraform changes in the 'terraform' directory"
+	@printf "$(CYAN)%-20s$(END) %b \n" "tf-apply-dev:" "Applies Terraform changes with dev environment specifics"
 	@echo ""
-	@printf "$(CYAN)%-20s$(END) %b \n" "build:" "Builds a production image as backend:prod"
-	@printf "$(CYAN)%-20s$(END) %b \n" "run-prod:" "Runs backend:prod image locally"
-	@printf "$(CYAN)%-20s$(END) %b \n" "debug-prod:" "Runs backend:prod image locally with interactive $(UNDERLINE)sh$(END)"
-
-	@echo ""
-	@printf "$(CYAN)%-20s$(END) %b \n" "tf-plan:" "Runs terraform plan"
-	@printf "$(CYAN)%-20s$(END) %b \n" "tf-apply:" "Runs terraform apply -auto-approve"
 
 
 ###########################################################
@@ -45,23 +49,27 @@ sonar-dev:
 	export $$(grep -v '^#' .secrets | xargs) && \
 	$(MAKE) sonar
 .PHONY: build-dev run-dev
-run-local:
-	$(MAKE) run-dev
 build-dev:
 	export $$(grep -v "^#" .secrets | xargs) && \
 	docker build -f Dockerfile.old.prod \
-	--build-arg PORT=$${PORT} \
+	--build-arg PORT=3000 \
 	--build-arg JWT_SECRET=$${JWT_SECRET} \
-	--build-arg DATABASE_URL="postgres://postgres:postgres@localhost:5432/cryptobot" \
+	--build-arg DATABASE_URL="postgres://postgres:postgres@pgsql:5432/cryptobot" \
 	--build-arg URL_WALLET=$${URL_WALLET} \
 	--build-arg URL_RSA=$${URL_RSA} \
 	--build-arg URL_CONSULTANT=$${URL_CONSULTANT} \
 	--build-arg SYSTEM_PUB_K=$${SYSTEM_PUB_K} \
 	--build-arg SYSTEM_PVT_K=$${SYSTEM_PVT_K} \
+	--build-arg STOCK_COMPASS_API_URL=$${STOCK_COMPASS_API_URL} \
 	-t backend:dev .
-run-dev: build-dev
+run-dev:
 	docker-compose -f docker-compose-dev.yaml --env-file ./env/dev.env up -d --force-recreate
-
+	docker exec -it backend_server sh
+dev:
+	$(MAKE) build-dev
+	npm run db:migrate:up
+	docker-compose -f docker-compose-dev.yaml --env-file ./env/dev.env up -d --force-recreate
+	
 act:
 	act --container-architecture linux/amd64 --secret-file .secrets --var-file .vars
 
