@@ -50,7 +50,7 @@ sonar-dev:
 	$(MAKE) sonar
 .PHONY: build-dev run-dev
 build-dev:
-	export $$(grep -v "^#" .secrets | xargs) && \
+	export $$(grep -v "^#" ./env/dev.env | xargs) && \
 	docker build -f Dockerfile.old.prod \
 	--build-arg PORT=3000 \
 	--build-arg JWT_SECRET=$${JWT_SECRET} \
