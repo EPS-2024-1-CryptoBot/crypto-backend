@@ -46,10 +46,7 @@ COPY --from=build /app/tsconfig*.json ./
 COPY --from=base /app/node_modules ./node_modules
 RUN mkdir -p env/prod
 RUN touch ./env/prod/firebase.json
-COPY ./env/dev/firebase.json ./env/prod/firebase.json
+COPY ./env/dev/firebase.json ./env/dev/firebase.json
 
 EXPOSE ${PORT}
-# RUN npm run db:migrate:down:prod
-# RUN npm run db:migrate:gen:prod
-# RUN npm run db:migrate:up:prod
 CMD node /srv/src/main.js
