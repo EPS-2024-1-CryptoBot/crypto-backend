@@ -67,10 +67,11 @@ run-dev:
 	docker exec -it backend_server sh
 bigbang:
 	$(MAKE) build-dev
-	npm run db:migrate:up
 	docker-compose -f docker-compose-dev.yaml --env-file ./env/dev.env up -d --force-recreate
+	npm run db:migrate:up
 dev:
 	$(MAKE) build-dev
+	docker-compose -f docker-compose-dev.yaml --env-file ./env/dev.env up pgsql -d --force-recreate
 	npm run db:migrate:up
 	docker-compose -f docker-compose-dev.yaml --env-file ./env/dev.env up --force-recreate
 	
