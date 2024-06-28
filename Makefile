@@ -55,9 +55,9 @@ build-dev:
 	--build-arg PORT=3000 \
 	--build-arg JWT_SECRET=$${JWT_SECRET} \
 	--build-arg DATABASE_URL="postgres://postgres:postgres@pgsql:5432/cryptobot" \
-	--build-arg URL_WALLET=$${URL_WALLET} \
-	--build-arg URL_RSA=$${URL_RSA} \
-	--build-arg URL_CONSULTANT=$${URL_CONSULTANT} \
+	--build-arg URL_WALLET="http://wallet_api:8000" \
+	--build-arg URL_RSA="http://rsa_api:9001" \
+	--build-arg URL_CONSULTANT="http://consultant_api:8001" \
 	--build-arg SYSTEM_PUB_K=$${SYSTEM_PUB_K} \
 	--build-arg SYSTEM_PVT_K=$${SYSTEM_PVT_K} \
 	--build-arg STOCK_COMPASS_API_URL=$${STOCK_COMPASS_API_URL} \
