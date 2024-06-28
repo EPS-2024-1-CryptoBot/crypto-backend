@@ -65,10 +65,14 @@ build-dev:
 run-dev:
 	docker-compose -f docker-compose-dev.yaml --env-file ./env/dev.env up -d --force-recreate
 	docker exec -it backend_server sh
-dev:
+bigbang:
 	$(MAKE) build-dev
 	npm run db:migrate:up
 	docker-compose -f docker-compose-dev.yaml --env-file ./env/dev.env up -d --force-recreate
+dev:
+	$(MAKE) build-dev
+	npm run db:migrate:up
+	docker-compose -f docker-compose-dev.yaml --env-file ./env/dev.env up --force-recreate
 	
 act:
 	act --container-architecture linux/amd64 --secret-file .secrets --var-file .vars
